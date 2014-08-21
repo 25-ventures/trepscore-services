@@ -4,28 +4,35 @@ module GoogleAnalytics
   
   class Exits
     extend Garb::Model
-    metrics :visits, :bounceRate,:goalConversionRateAll,:users,:organicSearches
-    dimensions :visitorType,:visitLength
+    metrics :visits, :bounce_rate,:goal_conversion_rate_all,:users,:organic_searches
+    dimensions :visitor_type,:visit_length
   end
   
   class Base
         
     def initialize(options = {})
       @options = options
-      
+      authenticate
     end
-
-    def get(options = {})
-      Garb::Session.login(@options[:client_id],  @options[:client_secret] ,:secure => false)
-      profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == @options[:web_id]}
-  
+    
+    def authenticate(client_id = @options[:client_id],client_secret = @options[:client_secret])
+      Garb::Session.login(client_id, client_secret, :secure => false)
+    end
+    
+    def get_data(options = {})      
+      profile = Garb::Management::Profile.all.detect {|p| p.web_property_id == @options[:web_id]}        
+    end
+    
+    def report
+      Exits.results(get_data)
+    end
+    
+    def get
       total_visit = 0
       unique_visit = 0
       bounce_rate = 0
       visit_length = 0
       conversion_rate = 0
-      
-      report = Exits.results(profile)
       count = report.size
       report.each do |rep|
         total_visit += rep.visits.to_i
@@ -37,15 +44,12 @@ module GoogleAnalytics
       bounce_rate = bounce_rate / count
       visit_length = visit_length / (count * 60)
       conversion_rate = conversion_rate/count
-      jsonlist = { :total_visit => total_visit, :unique_visit => unique_visit,:bounce_rate =>bounce_rate , :visit_length => visit_length, :conversion_rate => conversion_rate}
-    
-      jsonlist      
+      data_list = { :total_visit => total_visit, :unique_visit => unique_visit,:bounce_rate =>bounce_rate , :visit_length => visit_length, :conversion_rate => conversion_rate}
+      data_list      
     end
-    alias_method :each, :get
-
+   
     def metrics
-      metrics =  get
-      metrics
+      get
     end
     
     def resource_path

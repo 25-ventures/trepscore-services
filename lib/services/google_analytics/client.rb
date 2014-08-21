@@ -6,10 +6,11 @@ class GoogleAnalytics::Client < GoogleAnalytics::Base
     
     metrics = {}
     
-    %i{user}.each do |source|
+    %i{data}.each do |source|
       metrics[source] = send(source).metrics
     end
     metrics
+    
   end
   
   def method_missing(name, *args, &block)

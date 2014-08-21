@@ -2,7 +2,7 @@ module GoogleAnalytics
   
   autoload :Base, 'google_analytics/base'
   autoload :Client, 'google_analytics/client'
-  autoload :User, 'google_analytics/user'
+  autoload :Data, 'google_analytics/data'
   
 end
   
