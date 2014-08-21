@@ -64,7 +64,7 @@ class Service
       path = File.expand_path("../services/*.rb", __FILE__)
       Dir[path].each { |lib| require(lib) }
     end
-    
+
     # Tracks the defined services.
     #
     # Returns an Array of Service Classes
@@ -90,7 +90,7 @@ class Service
       @schema ||= []
     end
 
-    
+
     # Public: Adds the given attributes as String attributes in the Service's
     # schema.
     #
@@ -340,7 +340,7 @@ class Service
     def oauth?
       !@oauth.nil?
     end
- 
+
   end
 
   attr_reader :data
@@ -354,7 +354,7 @@ class Service
   # Interface method that every service MUST implement. This should return
   # a hash of pertinent data.
   def call
-    msg = "#{title} is not callable"
+    msg = "#{self.class.name} is not callable"
     raise NotImplementedError.new msg
   end
 

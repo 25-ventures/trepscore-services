@@ -6,3 +6,5 @@
 This repository contains code to integrate Trepscore with third party services.
 
 See the [Contributing Guidelines](https://github.com/25-ventures/trepscore-services/blob/master/CONTRIBUTING.md) for instructions on contributing a service.
+
+See the [Google Analytics] (https://github.com/ashokjp93/TrepscoreGA/blob/master/GoogleAnalyticsReadMe.md) instruction.

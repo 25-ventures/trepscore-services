@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'faraday_middleware',   '>= 0.9.1'
   spec.add_dependency 'multi_xml',            '>= 0'
   spec.add_dependency 'multi_json',           '>= 0'
-  
+  spec.add_dependency 'garb'
   ## Service Specific dependencies get added here
   
 
@@ -38,4 +38,5 @@ Gem::Specification.new do |spec|
   dev_null    = File.exist?('/dev/null') ? '/dev/null' : 'NUL'
   git_files   = `git ls-files -z 2>#{dev_null}`
   spec.files &= git_files.split("\0") if $?.success?
+
 end
