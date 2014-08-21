@@ -4,8 +4,8 @@ module GoogleAnalytics
   
   class Exits
     extend Garb::Model
-    metrics :visits, :bounce_rate,:goal_conversion_rate_all,:users,:organic_searches
-    dimensions :visitor_type,:visit_length
+    metrics :sessions, :bounce_rate,:goal_conversion_rate_all,:users,:organic_searches
+    dimensions :visitor_type,:visit_length,:day
   end
   
   class Base
