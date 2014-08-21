@@ -35,7 +35,7 @@ module GoogleAnalytics
       conversion_rate = 0
       count = report.size
       report.each do |rep|
-        total_visit += rep.visits.to_i
+        total_visit += rep.sessions.to_i
         unique_visit += rep.users.to_i 
         bounce_rate += rep.bounce_rate.to_f
         visit_length += rep.visit_length.to_f
