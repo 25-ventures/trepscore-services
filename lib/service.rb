@@ -380,4 +380,23 @@ class Service
     raise ConfigurationError, msg
   end
 
+  # Raised when a service hook needs to be retried. Services that raise this
+  # signal will be tried again in the near future. If a delay count is provided
+  # the service won't be retried until after that number of seconds.
+  class NotReadySignal < Exception
+    attr_reader :delay
+    def initialize(delay = nil)
+      @delay = delay
+    end
+  end
+
+  # Public: Raises a not ready signal inside a service, and halts further
+  # processing.
+  #
+  # delay - integer of delay in seconds
+  #
+  # Raises a Service::NotReadySignal .
+  def signal_not_ready(delay = nil)
+    raise NotReadySignal.new(delay)
+  end
 end
