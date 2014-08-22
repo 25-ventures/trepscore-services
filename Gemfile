@@ -9,7 +9,7 @@ gem 'rake'
 group :development do
   gem 'pry'
   gem 'rspec'
-  
+
   gem 'guard'
   gem 'guard-rspec', require: false
   gem 'guard-bundler'
@@ -19,3 +19,5 @@ group :development do
   gem 'rb-inotify', :require=>false
   gem 'terminal-notifier-guard'
 end
+
+gem 'octokit'
