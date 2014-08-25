@@ -8,7 +8,7 @@ Start a console: rake console
 
 Call this Service:
 
-Service::Googleanalytics.call(data: {client_id: "gatrepscore@gmail.com", client_secret: "Iontech123", webId: "UA-53947774-1"})
+Service::GoogleAnalytics.call(data: {client_id: "gatrepscore@gmail.com", client_secret: "Iontech123", web_id: "UA-53947774-1"})
 
 Sample Output :
 
