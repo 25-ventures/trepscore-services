@@ -19,5 +19,3 @@ group :development do
   gem 'rb-inotify', :require=>false
   gem 'terminal-notifier-guard'
 end
-
-gem 'octokit'

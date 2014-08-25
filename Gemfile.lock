@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.fb0e553)
+    trepscore-services (0.0.2.6a732d2)
       descendants_tracker (~> 0.0.4)
+      octokit (>= 3.3.0)
       pipedrive-client
 
 GEM
@@ -99,7 +100,6 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rspec
-  octokit
   pry
   rake
   rb-fchange
