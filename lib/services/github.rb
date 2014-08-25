@@ -1,11 +1,8 @@
 module Github
-  # HEADERS = {
-  #   "User-Agent"    => "Ruby.Github.Api",
-  #   "Accept"        => "application/json",
-  #   "Content-Type"  => "application/x-www-form-urlencoded"
-  # }
+  autoload :Client, 'github/client'
 
-  autoload :Client,         'github/client'
+  # Custom exceptions
+  class StatsNotReady < StandardError; end
 end
 
 class Service::Github < Service
@@ -32,10 +29,18 @@ class Service::Github < Service
 
   def call
     %w(id token repo).each do |field|
-      raise_config_error "Missing '#{field}'" if data[field.to_sym].to_s == ''
+      raise_config_error "Missing '#{field}'" if data[field].to_s == ''
     end
 
-    client = ::Github::Client.new(token: data[:token], id: data[:id], repo: data[:repo])
-    client.metrics
+    client = ::Github::Client.new(token: data["token"], id: data["id"], repo: data["repo"])
+    begin
+      client.metrics
+    rescue ::Github::StatsNotReady
+      signal_not_ready(5)
+    rescue Octokit::NotFound
+      # This exception occurs when the repo is not found
+      # Not sure how to handle this, so I'm just returning nil
+      nil
+    end
   end
 end

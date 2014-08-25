@@ -12,18 +12,32 @@ class Github::Client
   def metrics
     {
       total_commits: total_commits,
+      open_issues: open_issues,
+      closed_issues: closed_issues,
     }
   end
 
+  protected
+
   def total_commits
     repo_stats = octokit.contributors_stats(repo)
-    # user_stats = repo_stats.find { |stat| stat[:author][:id].to_s == id }
-    # user_stats[:total]
-    repo_stats.inject(0) {| sum, stat| sum += stat[:total] }
+    raise Github::StatsNotReady if repo_stats.nil?
+    repo_stats.inject(0) {|sum, stat| sum += stat[:total] }
   end
 
-  protected
+  def open_issues
+    issues.select{|i| i[:state] == 'open'}.count
+  end
+
+  def closed_issues
+    issues.select{|i| i[:state] == 'closed'}.count
+  end
+
   def octokit
     @octokit ||=  Octokit::Client.new(access_token: token)
+  end
+
+  def issues
+    @issues ||= octokit.list_issues(repo, state: :all)
   end
 end

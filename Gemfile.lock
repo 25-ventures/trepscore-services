@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.b689954)
+    trepscore-services (0.0.2.fb0e553)
       descendants_tracker (~> 0.0.4)
       pipedrive-client
 
