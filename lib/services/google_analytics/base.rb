@@ -4,8 +4,7 @@ module GoogleAnalytics
   
   class Exits
     extend Garb::Model
-    metrics :sessions, :bounce_rate,:goal_conversion_rate_all,:users,:organic_searches
-    dimensions :visitor_type,:visit_length,:day
+      metrics :pageviews,:bounceRate,:avgSessionDuration,:sessions,:users,:transactions,:visits    
   end
   
   class Base
@@ -33,19 +32,17 @@ module GoogleAnalytics
       bounce_rate = 0
       visit_length = 0
       conversion_rate = 0
-      count = report.size
-      report.each do |rep|
-        total_visit += rep.sessions.to_i
-        unique_visit += rep.users.to_i 
-        bounce_rate += rep.bounce_rate.to_f
-        visit_length += rep.visit_length.to_f
-        conversion_rate += rep.goal_conversion_rate_all.to_f
+      transactions = 0
+            
+      report.each do |repo|
+          total_visit = repo.visits.to_i
+          unique_visit = repo.users
+          bounce_rate = repo.bounce_rate
+          visit_length = repo.avg_session_duration.to_i
+          transactions = repo.transactions.to_i                              
       end
-      bounce_rate = bounce_rate / count
-      visit_length = visit_length / (count * 60)
-      conversion_rate = conversion_rate/count
-      data_list = { :total_visit => total_visit, :unique_visit => unique_visit,:bounce_rate =>bounce_rate , :visit_length => visit_length, :conversion_rate => conversion_rate}
-      data_list      
+      conversion_rate = ( transactions / total_visit) * 100
+      data_list = { :total_visit => total_visit, :unique_visit => unique_visit,:bounce_rate =>bounce_rate , :visit_length => visit_length/60, :conversion_rate => conversion_rate}
     end
    
     def metrics
