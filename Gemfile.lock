@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.1.be4ab86)
+    Trepscore-Services (0.0.2.0d7b519)
       faraday (>= 0.9.0)
       faraday_middleware (>= 0.9.1)
       multi_json
@@ -72,6 +72,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  Trepscore-Services!
   guard
   guard-bundler
   guard-rspec
@@ -82,4 +83,3 @@ DEPENDENCIES
   rb-inotify
   rspec
   terminal-notifier-guard
-  trepscore-services!
