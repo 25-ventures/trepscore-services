@@ -21,9 +21,15 @@ You can annotate all of this directly in the service class itself, like so:
 ```ruby
 class Service::SomeService < Service
   category :accounting
+  
+  required do
+    string   :client_key
+    password :client_secret
+  end
 
-  string  :client_key
-  pasword :client_secret
+  optional do
+    boolean :include_pending_activity
+  end
   
   url       'http://www.example.com'
   url_logo  'http://www.example.com/logo.png'
@@ -32,13 +38,27 @@ class Service::SomeService < Service
                 email:  'ryan@trepscore.com',
                 web:    'www.trepscore.com/contact'
 
-  def call
-    #...
+  def validate
+    # ...
+  end
+
+  def test
+    # ...
+  end
+
+  def call(period)
+    # ...
   end
 end
 ```
 
 These schema annotations are used to generate the user interface that controls the settings. It's better to be descriptive rather than terse. Good examples are: `:api_key`, `:token`, `:username`. Bad examples are: `:realmID`, `:tkn`, `:key6`.
+
+Please note the three interface methods and their purpose:
+
+1. `validate()` allows you to have validations of the data parameters beyond being required. A good example would be to validate a token fits a specific format. Note: DO NOT execute any external requests within this method.
+2. `test()` is used to determine if the data provided is sufficient to connect to the service. This is where you would interact with the external service to make sure everything is working.
+3. `call(period)` receives a Date Range of the desired period for which we want the data. All data points should be summed over this period. 
 
 Some services use OAuth to authenticate with their API; this too can be annotated in the service class itself:
 
@@ -60,9 +80,17 @@ class Service::SomeOauthService < Service
       secret: response['credentials']['secret']
     }
   end
+  
+  def validate
+    # ...
+  end
 
-  def call
-    #...
+  def test
+    # ...
+  end
+
+  def call(period)
+    # ...
   end
 end
 ```
@@ -86,8 +114,9 @@ Just try to be clean by adding a subfolder with the same name as your service --
 
 At the end of the day, the following are the requirements for any service. A service:
 
-0. Annotated its attributes (schema) as required and
-1. implements the `call()` interface that
+0. Annotates its required and optional attributes (schema) and
+1. implements the `test()` interface and
+1. implements the `call(period)` interface that accepts a period range and
 2. returns a hash of the attributes defined in the
 3. [integration list][integration-list] for the annotated category.
 
@@ -120,6 +149,8 @@ You can test your service in a ruby console:
 7. Being needlessly complicated without a comment justifying the complications
 8. Using abusive language
 9. Attempting to be malicious towards us or any third party
+
+We have HoundCI enabled to help catch general style issues; please resolve any issues that Hound brings up. If there is a specific instance where you think Hound is wrong, leave a comment and we'll review it.
 
 
 [bounty-program]: https://github.com/25-ventures/trepscore-services/wiki
