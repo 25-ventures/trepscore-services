@@ -2,7 +2,6 @@ module TrepScore
   module Services
     class Service
       class << self
-
         ######################
         # SERVICE SCHEMA DSL #
         ######################
@@ -23,7 +22,7 @@ module TrepScore
         #   # => [[:string, :token, :required], [:string, :token, :optional], ]
         #
         # Returns an Array of tuples:
-        #  [Symbol attribute type, Symbol attribute name, Symbol attribute required] 
+        #  [Symbol attribute type, Symbol attribute name, Symbol attribute required]
         def schema
           @schema ||= []
         end
@@ -88,7 +87,7 @@ module TrepScore
         # Public: Add required schema attributes. This helper is available to help provide
         # clarity to service classes. All attributes are required by default unless flagged
         # as :optional with this helper's counterpart: optional {}
-        # 
+        #
         # Example:
         #
         #   class FooService < Service
@@ -98,7 +97,7 @@ module TrepScore
         #   end
         #
         #   FooService.schema
-        #   # => [[:string, :token, :required]] 
+        #   # => [[:string, :token, :required]]
         def required(&blk)
           @schema_flag = :required
           instance_eval &blk
@@ -107,7 +106,7 @@ module TrepScore
 
         # Public: Add optional schema attributes. Attributes defined within the block are
         # flagged as optional and will be displayed as such in the settings interface.
-        # 
+        #
         # Example:
         #
         #   class FooService < Service
@@ -117,7 +116,7 @@ module TrepScore
         #   end
         #
         #   FooService.schema
-        #   # => [[:string, :nickname, :optional]] 
+        #   # => [[:string, :nickname, :optional]]
         def optional(&blk)
           @schema_flag = :optional
           instance_eval &blk
@@ -133,7 +132,7 @@ module TrepScore
         # Returns nothing.
         def add_to_schema(type, attrs)
           attrs.each do |attr|
-            schema << [type, attr.to_sym, @schema_flag || :required ]
+            schema << [type, attr.to_sym, (@schema_flag || :required)]
           end
         end
 
@@ -327,8 +326,8 @@ module TrepScore
           results = {}
           instance = new(data: data)
 
-          Array(period).each do |period|
-            results[period] = instance.call(period)
+          Array(period).each do |p|
+            results[p] = instance.call(p)
           end
 
           results
@@ -346,6 +345,7 @@ module TrepScore
 
       # Interface method that every service MUST implement. This should return
       # a hash of pertinent data for the given time period
+      # rubocop:disable Lint/UnusedMethodArgument
       def call(period)
         raise NotImplementedError.new "#{self.class.name} is not callable"
       end
@@ -358,7 +358,7 @@ module TrepScore
         warn "#{self.class.name} is not testable"
       end
 
-      # An optional interface method. This is executed upon instantiation and 
+      # An optional interface method. This is executed upon instantiation and
       # provides a chance to validate the inputs for something other than presence.
       # Raise a configuration error to indicate that the settigns data is unacceptable.
       def validate
@@ -382,7 +382,6 @@ module TrepScore
       def signal_not_ready(delay = nil)
         raise NotReadySignal.new(delay)
       end
-
     end
   end
 end

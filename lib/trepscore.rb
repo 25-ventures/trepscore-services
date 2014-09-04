@@ -3,6 +3,4 @@ require 'trepscore/errors'
 require 'trepscore/contributors'
 require 'trepscore/services'
 
-module TrepScore
-
-end
+module TrepScore; end

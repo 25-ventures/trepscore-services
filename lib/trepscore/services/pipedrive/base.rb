@@ -24,11 +24,9 @@ module Pipedrive
         data.each do |item|
           yield OpenStruct.new item
         end
-        # binding.pry
-        
+
         if next_start(response)
           options[:params] = (options[:params]||{}).merge({start: next_start(response)})
-          # binding.pry
           send(__callee__, options) do |data|
             yield data
           end
@@ -38,10 +36,9 @@ module Pipedrive
     end
     alias_method :each, :get
 
-    
     def metrics
       metrics = {total: all.count}
-      
+
       get.each do |item|
         key = metric_key(item)
         break if key.nil?
@@ -99,7 +96,7 @@ module Pipedrive
     private
       def _get_resource(options = {})
         params = default_params.merge (options.delete(:params) ||  {})
-        
+
         response = connection.get do |req|
           req.url (options.delete(:resource_path) || resource_path)
           req.headers = ::Pipedrive::HEADERS

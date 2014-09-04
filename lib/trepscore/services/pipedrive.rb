@@ -33,7 +33,7 @@ module TrepScore
         string :token
       end
 
-      def call(period)
+      def call(*)
         client = ::Pipedrive::Client.new(api_token: data['token'])
         client.metrics
       end

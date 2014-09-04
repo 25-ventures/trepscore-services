@@ -21,7 +21,7 @@ module TrepScore
     end
 
     def to_contributor_hash(key)
-      {:type => self.class.contributor_type, key => value}
+      { :type => self.class.contributor_type, key => value }
     end
   end
 

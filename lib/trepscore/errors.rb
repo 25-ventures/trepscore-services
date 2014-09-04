@@ -2,8 +2,8 @@ module TrepScore
   # Raised when an unexpected error occurs during service execution.
   class Error < StandardError
     attr_reader :original_exception
-    def initialize(message, original_exception=nil)
-      original_exception = message if message.kind_of?(Exception)
+    def initialize(message, original_exception = nil)
+      original_exception = message if message.is_a?(Exception)
       @original_exception = original_exception
       super(message)
     end
