@@ -10,5 +10,4 @@ class Pipedrive::Deals < Pipedrive::Base
 
     options
   end
-
 end

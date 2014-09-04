@@ -1,5 +1,4 @@
 class Pipedrive::Filters < Pipedrive::Base
-  
   %w{deals people products organizations}.each do |type|
     define_method type do |*options|
       for_type(type, options.first)
@@ -17,5 +16,4 @@ class Pipedrive::Filters < Pipedrive::Base
     name = name_key.to_s.humanize
     get.select{|filter| filter['name'] == name}.first
   end
-
 end

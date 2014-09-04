@@ -1,5 +1,5 @@
 # Require the code we're testing
-require 'trepscore-services'
+require 'trepscore'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

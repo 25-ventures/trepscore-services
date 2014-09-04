@@ -8,17 +8,16 @@ class Pipedrive::Client < Pipedrive::Base
 
   def metrics
     metrics = {}
-    
+
     %i{activities deals organizations persons}.each do |source|
       metrics[source] = send(source).metrics
     end
 
     metrics
   end
-  
+
   def method_missing(name, *args, &block)
-    begin 
-      resource(name)
+    resource(name)
     rescue NameError
       # Since we're silently loading a Resource Class
       # we transform this into a NoMethodError to

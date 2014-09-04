@@ -24,18 +24,19 @@ module Pipedrive
   autoload :Users,          'pipedrive/users'
 end
 
-class Service::Pipedrive < Service
-  string :token
-  category :crm
+module TrepScore
+  module Services
+    class Pipedrive < Service
+      category :crm
 
-  def call
-    client = ::Pipedrive::Client.new(api_token: token)
-    client.metrics
+      required do
+        string :token
+      end
+
+      def call(*)
+        client = ::Pipedrive::Client.new(api_token: data['token'])
+        client.metrics
+      end
+    end
   end
-
-  def token
-    raise_config_error "Missing 'api_token'" if data['token'].to_s == ''
-    data['token']
-  end
-
 end
