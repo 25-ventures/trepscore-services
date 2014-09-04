@@ -296,6 +296,8 @@ module TrepScore
         # TREPSCORE INTEGRATION API #
         #############################
 
+        # Confirm that the data meets the requirements of the schema and
+        # raise a configuration error if it does not.
         def validate(data: {})
           schema.each do |_, attribute, flag|
             next if flag == :optional
@@ -306,6 +308,19 @@ module TrepScore
           end
         end
 
+        # Test that the data is acceptable to the external service and
+        # raise a configuration error if it is not.
+        def test(data: {})
+          validate(data)
+          new(data: data).test
+        end
+
+        # Call the service and collect the data points.
+        #
+        # period  - the date range or ranges to collect information for
+        # data    - a hash of stored settings, as defined by the schema
+        #
+        # Returns a hash in the form of {Range => Metrics Hash}.
         def call(period:, data: {})
           validate(data)
 
@@ -335,8 +350,17 @@ module TrepScore
         raise NotImplementedError.new "#{self.class.name} is not callable"
       end
 
+      # An optional interface method. This is executed when setting up the service,
+      # and provides a way to check that the settings are acceptable to the
+      # external service provider. Raise a configuration error or other error type
+      # to indicate that the settings data is unacceptable.
+      def test
+        warn "#{self.class.name} is not testable"
+      end
+
       # An optional interface method. This is executed upon instantiation and 
       # provides a chance to validate the inputs for something other than presence.
+      # Raise a configuration error to indicate that the settigns data is unacceptable.
       def validate
         # optional
       end
