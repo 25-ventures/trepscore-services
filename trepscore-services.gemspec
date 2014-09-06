@@ -19,12 +19,14 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://github.com/trepscore/trepscore-services'
 
   spec.add_dependency 'descendants_tracker',  '~> 0.0.4'
-  spec.add_dependency 'octokit',              '>= 3.3.0'
 
   #=============================================================================
   # Service Specific dependencies get added here
   #=============================================================================
   spec.add_dependency 'pipedrive-client'
+
+  # GitHub Integration
+  spec.add_dependency 'octokit',              '>= 3.3.0'
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
