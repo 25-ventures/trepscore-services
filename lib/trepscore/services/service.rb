@@ -298,20 +298,36 @@ module TrepScore
 
         # Confirm that the data meets the requirements of the schema and
         # raise a configuration error if it does not.
-        def validate(data: {})
+        def validate(data = {})
+          errors = {}
+
           schema.each do |_, attribute, flag|
             next if flag == :optional
 
             if data[attribute.to_s].to_s == ''
-              raise ConfigurationError, "Missing '#{attribute}'"
+              errors[attribute] = [:required, 'cannot be blank']
             end
+          end
+
+          errors
+        end
+
+        def validate!(data = {})
+          errors = validate(data)
+
+          if errors.any?
+            messages = []
+            errors.each do |field, (_, message)|
+              messages << [field, message].join(' ')
+            end
+            raise ConfigurationError, messages.join(', ')
           end
         end
 
         # Test that the data is acceptable to the external service and
         # raise a configuration error if it is not.
         def test(data: {})
-          validate(data)
+          validate!(data)
           new(data: data).test
         end
 
@@ -322,7 +338,7 @@ module TrepScore
         #
         # Returns a hash in the form of {Range => Metrics Hash}.
         def call(period:, data: {})
-          validate(data)
+          validate!(data)
 
           results = {}
           instance = new(data: data)
