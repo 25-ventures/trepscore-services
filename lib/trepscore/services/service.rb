@@ -245,7 +245,6 @@ module TrepScore
           file.downcase!
           file.sub! /.*:/, ''
           doc_file = File.expand_path("../../../../doc/#{file}", __FILE__)
-          binding.pry
           File.exists?(doc_file) ? File.read(doc_file) : ""
         end
 
