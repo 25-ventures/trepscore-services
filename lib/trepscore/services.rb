@@ -15,7 +15,7 @@ module TrepScore
       #
       # Returns an Array of Service Classes
       def registry
-        @registry ||= []
+        Service.descendants
       end
     end
   end

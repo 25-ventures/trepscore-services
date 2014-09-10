@@ -1,6 +1,10 @@
+require 'descendants_tracker'
+
 module TrepScore
   module Services
     class Service
+      extend DescendantsTracker
+
       class << self
         ######################
         # SERVICE SCHEMA DSL #
@@ -277,18 +281,6 @@ module TrepScore
         # Helper used to determine if the service is using OAuth.
         def oauth?
           !@oauth.nil?
-        end
-
-        #############################
-        # INTERNAL SERVICE REGISTRY #
-        #############################
-
-        # Automatically registers the service as it is Required.
-        #
-        # Returns nothing
-        def inherited(svc)
-          TrepScore::Services.registry << svc
-          super
         end
 
         #############################
