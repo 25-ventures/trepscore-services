@@ -18,16 +18,12 @@ Gem::Specification.new do |spec|
   spec.email    = 'ryan@trepscore.com'
   spec.homepage = 'https://github.com/trepscore/trepscore-services'
 
-  spec.add_dependency 'faraday',              '>= 0.9.0'
-  spec.add_dependency 'faraday_middleware',   '>= 0.9.1'
-  spec.add_dependency 'multi_xml',            '>= 0'
-  spec.add_dependency 'multi_json',           '>= 0'
-
   spec.add_dependency 'descendants_tracker',  '~> 0.0.4'
 
-  ## Service Specific dependencies get added here
-
-
+  #=============================================================================
+  # Service Specific dependencies get added here
+  #=============================================================================
+  spec.add_dependency 'pipedrive-client'
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
