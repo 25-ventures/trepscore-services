@@ -317,9 +317,9 @@ module TrepScore
 
         # Test that the data is acceptable to the external service and
         # raise a configuration error if it is not.
-        def test(data: {})
+        def test(data = {})
           validate!(data)
-          new(data: data).test
+          new(data).test
         end
 
         # Call the service and collect the data points.
@@ -332,7 +332,7 @@ module TrepScore
           validate!(data)
 
           results = {}
-          instance = new(data: data)
+          instance = new(data)
 
           Array(period).each do |p|
             results[p] = instance.call(p)
@@ -346,7 +346,7 @@ module TrepScore
 
       # Basic initializer provided to make life easier. All data needed
       # from OAuth or the Schema is passed through the `data` hash.
-      def initialize(data: {})
+      def initialize(data = {})
         @data = data || {}
         @data.default_proc = proc do |h, k|
           case k
