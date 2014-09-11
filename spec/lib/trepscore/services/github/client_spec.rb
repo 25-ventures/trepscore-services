@@ -1,6 +1,6 @@
-require 'services/github'
+require 'trepscore/services/github'
 
-describe Github::Client do
+describe ::Github::Client do
   let(:octokit) { double("Octokit client", contributors_stats: [], list_issues: []) }
   let(:data) { { repo: '25-ventures/trepscore-services', token: 'secret-token', id: '123456' } }
 
