@@ -22,9 +22,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'faraday_middleware',   '>= 0.9.1'
   spec.add_dependency 'multi_xml',            '>= 0'
   spec.add_dependency 'multi_json',           '>= 0'
-  
+
+  spec.add_dependency 'descendants_tracker',  '~> 0.0.4'
+
   ## Service Specific dependencies get added here
-  
+
 
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
