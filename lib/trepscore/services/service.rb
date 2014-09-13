@@ -348,6 +348,13 @@ module TrepScore
       # from OAuth or the Schema is passed through the `data` hash.
       def initialize(data: {})
         @data = data || {}
+        @data.default_proc = proc do |h, k|
+          case k
+          when String then h[k.to_sym]
+          when Symbol then h[k.to_s]
+          end
+        end
+
         validate
       end
 
