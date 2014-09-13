@@ -40,10 +40,8 @@ module TrepScore
           client.metrics
         rescue ::Github::StatsNotReady
           signal_not_ready(5)
-        rescue Octokit::NotFound
-          # This exception occurs when the repo is not found
-          # Not sure how to handle this, so I'm just returning nil
-          nil
+        rescue Octokit::NotFound => e
+          raise TrepScore::ConfigurationError.new('Repo not found', e)
         end
       end
     end
