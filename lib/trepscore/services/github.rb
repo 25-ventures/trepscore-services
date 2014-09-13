@@ -23,16 +23,19 @@ module TrepScore
                     email:  'hi@federomero.uy',
                     web:    'http://federomero.uy'
 
-
       oauth(provider: :github) do |response, _|
         {
           token: response['credentials']['token'],
-          id: response["uid"],
+          id: response['uid'],
         }
       end
 
       def call(period)
-        client = ::Github::Client.new(token: data["token"], id: data["id"], repo: data["repo"])
+        client = ::Github::Client.new(
+                                        token: data['token'],
+                                        id: data['id'],
+                                        repo: data['repo'],
+                                      )
         begin
           client.metrics
         rescue ::Github::StatsNotReady
