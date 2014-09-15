@@ -35,7 +35,7 @@ class Github::Client
     while more
       commits = octokit.commits(repo, nil, since: start_time, page: page)
 
-      relevant = commits.select{|c| c[:commit][:author][:date] <= end_time }.length
+      relevant = commits.select { |c| c[:commit][:author][:date] <= end_time }.length
       # binding.pry
       total += relevant
       if commits.length == relevant && relevant > 0
@@ -65,7 +65,7 @@ class Github::Client
 
       issues = octokit.list_issues(repo, options)
 
-      relevant = issues.select{|i| i[:created_at] <= end_time }.length
+      relevant = issues.select { |i| i[:created_at] <= end_time }.length
 
       total += relevant
       if issues.length == relevant && relevant > 0
@@ -95,11 +95,11 @@ class Github::Client
 
       issues = octokit.list_issues(repo, options)
 
-      relevant = issues.select{ |i| i[:closed_at] <= end_time }.length
+      relevant = issues.select { |i| i[:closed_at] <= end_time }.length
 
       total += relevant
 
-      if issues.length == 0 || issues.any?{ |i| i[:created_at] > end_time }
+      if issues.length == 0 || issues.any? { |i| i[:created_at] > end_time }
         more = false
       else
         page += 1
