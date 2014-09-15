@@ -32,6 +32,7 @@ module TrepScore
 
       def call(period)
         client = ::Github::Client.new(
+                                        period: period,
                                         token: data['token'],
                                         id: data['id'],
                                         repo: data['repo'],

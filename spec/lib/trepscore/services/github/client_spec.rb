@@ -1,40 +1,30 @@
 require 'trepscore/services/github'
+require 'pry'
 
 describe ::Github::Client do
-  let(:octokit) { double("Octokit client", contributors_stats: [], list_issues: []) }
-  let(:data) { { repo: '25-ventures/trepscore-services', token: 'secret-token', id: '123456' } }
+  let(:octokit) { double("Octokit client", commits: [], list_issues: [], same_options?: false) }
+  let(:end_date) { Date.today }
+  let(:start_date) { Date.today - 7 }
+
+  let(:data) { { repo: '25-ventures/trepscore-services', token: 'secret-token', id: '123456', period: (start_date..end_date) } }
 
   before do
     allow(Octokit::Client).to receive(:new) { octokit }
   end
 
   it 'returns the total number of commits' do
-    allow(octokit).to receive(:contributors_stats) do
-      [ { total: 1 }, { total: 2 }, { total: 3 } ]
+    allow(octokit).to receive(:commits) do
+      [ { commit: {author: { date: (Date.today - 5).to_time } } }, { commit: {author: { date: (Date.today - 1).to_time}} }, { commit: {author: { date: (Date.today + 1).to_time}} } ]
     end
     metrics = Github::Client.new(data).metrics
-    expect(metrics[:total_commits]).to equal(6)
+    expect(metrics[:total_commits]).to equal(2)
   end
 
-  it 'returns the number of open and closed issues' do
+  it 'returns the number of issues open in the period' do
     allow(octokit).to receive(:list_issues) do
-      [ { state: 'open' }, { state: 'closed' }, { state: 'open' } ]
+      [ { created_at:  (Date.today - 5).to_time, closed_at: (Date.today - 5).to_time }, { created_at:  (Date.today - 1).to_time, closed_at: (Date.today - 1).to_time }, { created_at:  (Date.today + 1).to_time, closed_at: (Date.today + 1).to_time }]
     end
     metrics = Github::Client.new(data).metrics
     expect(metrics[:open_issues]).to equal(2)
-    expect(metrics[:closed_issues]).to equal(1)
-  end
-
-  it 'raises an error if stats are not ready' do
-    allow(octokit).to receive(:contributors_stats) { nil }
-
-    stats_not_ready = begin
-                        Github::Client.new(data).metrics
-                        false
-                      rescue Github::StatsNotReady
-                        true
-                      end
-
-    expect(stats_not_ready).to be_truthy
   end
 end
