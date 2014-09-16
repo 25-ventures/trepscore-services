@@ -1,4 +1,4 @@
-require 'services/service'
+require 'trepscore/services/service'
 
 module TrepScore
   module Services
