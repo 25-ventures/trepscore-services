@@ -31,6 +31,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'octokit',              '>= 3.3.0'
   spec.add_dependency 'omniauth-github'
 
+  # Quickbooks
+  spec.add_dependency 'quickbooks-ruby'
+  # spec.add_dependency 'omniauth-quickbooks' #TODO: uncomment when PR is merged
+
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
   spec.files += Dir.glob("lib/**/*.rb")
