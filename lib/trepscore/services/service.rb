@@ -347,6 +347,7 @@ module TrepScore
         end
 
         private
+
           INDIFFERENT_PROC = proc do |h, k|
             case k
             when String then h[k.to_sym] if h.key?(k.to_sym)

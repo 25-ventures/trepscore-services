@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 class TestService < TrepScore::Services::Service
-  maintained_by :github => 'ryanfaerman'
+  maintained_by github: 'ryanfaerman'
 
   required do
     string :token
   end
 
-  def call(period)
+  def call(*)
     0
   end
 
@@ -21,7 +21,7 @@ describe TrepScore::Services::Service do
   let(:range2) { Date.new(2014, 9, 8)..Date.new(2014, 9, 14) }
 
   let(:data) { { 'token' => 'foo' } }
-  let(:symbols_data) { { :token => 'foo' } }
+  let(:symbols_data) { { token: 'foo' } }
 
   context '.validate' do
     it 'works with string keys' do
@@ -53,15 +53,15 @@ describe TrepScore::Services::Service do
 
   context '.call' do
     it 'works with a single date range for the period' do
-      expect(TestService.call(period: range1, data: data)).to eq({ range1 => 0 })
+      expect(TestService.call(period: range1, data: data)).to eq(range1 => 0)
     end
 
     it 'works with an array of date ranges for the period' do
-      expect(TestService.call(period: [range1, range2], data: data)).to eq({ range1 => 0, range2 => 0 })
+      expect(TestService.call(period: [range1, range2], data: data)).to eq(range1 => 0, range2 => 0)
     end
 
     it 'works with symbol keys' do
-      expect(TestService.call(period: range1, data: symbols_data)).to eq({ range1 => 0 })
+      expect(TestService.call(period: range1, data: symbols_data)).to eq(range1 => 0)
     end
 
     it 'validates required data fields' do
