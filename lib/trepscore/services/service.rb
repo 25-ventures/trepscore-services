@@ -292,6 +292,8 @@ module TrepScore
         def validate(data = {})
           errors = {}
 
+          make_hash_indifferent(data)
+
           schema.each do |_, attribute, flag|
             next if flag == :optional
 
@@ -318,6 +320,7 @@ module TrepScore
         # Test that the data is acceptable to the external service and
         # raise a configuration error if it is not.
         def test(data = {})
+          make_hash_indifferent(data)
           validate!(data)
           new(data).test
         end
@@ -329,31 +332,39 @@ module TrepScore
         #
         # Returns a hash in the form of {Range => Metrics Hash}.
         def call(period:, data: {})
-          validate!(data)
-
           results = {}
+
+          make_hash_indifferent(data)
+          validate!(data)
           instance = new(data)
 
-          Array(period).each do |p|
+          period = [period] unless period.is_a? Array
+          period.each do |p|
             results[p] = instance.call(p)
           end
 
           results
         end
+
+        private
+          INDIFFERENT_PROC = proc do |h, k|
+            case k
+            when String then h[k.to_sym] if h.key?(k.to_sym)
+            when Symbol then h[k.to_s] if h.key?(k.to_s)
+            end
+          end
+
+          def make_hash_indifferent(hash)
+            hash.default_proc = INDIFFERENT_PROC
+          end
       end
 
       attr_reader :data
 
       # Basic initializer provided to make life easier. All data needed
       # from OAuth or the Schema is passed through the `data` hash.
-      def initialize(data = {})
-        @data = data || {}
-        @data.default_proc = proc do |h, k|
-          case k
-          when String then h[k.to_sym]
-          when Symbol then h[k.to_s]
-          end
-        end
+      def initialize(data)
+        @data = data
 
         validate
       end
