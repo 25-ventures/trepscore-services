@@ -9,7 +9,7 @@ gem 'rake'
 group :development do
   gem 'pry'
   gem 'rspec'
-  
+
   gem 'guard'
   gem 'guard-rspec', require: false
   gem 'guard-bundler'
