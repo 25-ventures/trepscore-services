@@ -1,27 +1,15 @@
-Lorem pipedrive attulerat. Membrana visa matris gratamque vetus timendos
-Tiresia per fata, sacrorum ambrosia; et. Nocte navigiis caput Herculis requiris
-parvum belua, nec in Vertumnus oblivia abesto, tibi studioque triplices.
-Temeraria utque iacent instabiles causa iudice, quae damus faciemque templum.
-Fratres quod excussam, non has et praeferri fallunt illo, optantemque data
-legati, interea cum cladem quantaque multas.
+###Pipedrive CRM
+Pipedrive CRM is sales pipeline management software which is simple to use but yet very powerful. The software is used by companies such as HubSpot, 500 Startups, Fortumo, GrabCad, DuckDuckGo and LUXr around the world.
 
-1. Mora TrepScore deceptus etiamnum qui fulmina quam
-2. Huc prohibetque
-3. Studiosius annua tauro
+You can connect your existing Pipedrive account to TrepScore simply by providing your Pipedrive API token. That's it, it's that easy!
 
-## Canendo diriguit media reliquerat dixerat
+###Install Notes
 
-Iuppiter vertuntur neque; hoc quae socerumque petunt increvit magnas reverentia
-serrae in risus ferendam. Nox oras accersite aut. Habens senem defecto, qui
-dedissent deberi totidem Hymenaeus tempore demens neve est.
+Pipedrive needs your `personal API token` in order to import data to your TrepScore account. Set up this service by:
 
-## Mortales pharetratae alto conditor quae
-
-Est argenteus durum cognataque perque! Teneat nate domus spes est mihi erat
-munimine resistunt longi: tibi alis Iovis carinas, tenentem Peleus. Munera non
-silentia multum. Subitarum nomen postquam moriens in germana, tollens en certis
-non caesariem alia. Agitque limus.
-
-> Totoque Pelates nam: habent cultusque, fixis aere corpore. Fixumque partim
-> excessere, quamvis quid, pulchraque manu pronepos audit, est et magis classe!
-> Manu quaeque, fugae, tum, non nutrimen omnia.
+1. Login to your Pipedrive account
+2. Click "settings" in the pulldown menu at the top-right of the screen
+3. Click the "API" link in the settings menu
+4. Copy the existing API key or generate a new one and copy that
+5. Paste the API key that you copied into the "token" text field below
+6. Click the "save service" button
