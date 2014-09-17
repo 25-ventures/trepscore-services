@@ -9,9 +9,7 @@ module TrepScore
       category :developer_tools
 
       required do
-        string :id
         string :repo
-        string :token
       end
 
       url 'http://github.com'
