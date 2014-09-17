@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.6a732d2)
+    trepscore-services (0.0.2.daa6f9a)
       descendants_tracker (~> 0.0.4)
       octokit (>= 3.3.0)
       pipedrive-client
