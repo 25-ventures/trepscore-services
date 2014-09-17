@@ -1,3 +1,5 @@
+require 'omniauth-github'
+
 module TrepScore
   module Services
     class GitHub < Service
