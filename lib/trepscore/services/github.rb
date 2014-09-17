@@ -23,7 +23,7 @@ module TrepScore
                     email:  'hi@federomero.uy',
                     web:    'http://federomero.uy'
 
-      oauth(provider: :github) do |response, _|
+      oauth(provider: :github, scope: 'user,repo') do |response, _|
         {
           token: response['credentials']['token'],
           id: response['uid'],
