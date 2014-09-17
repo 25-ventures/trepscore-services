@@ -38,7 +38,7 @@ module TrepScore
         rescue StatsNotReady
           signal_not_ready(5)
         rescue Octokit::NotFound => e
-          raise TrepScore::ConfigurationError.new('Repo not found', e)
+          raise TrepScore::ConfigurationError.new("Repo '#{client.repo}' was not found", e)
         end
       end
     end
