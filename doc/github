@@ -1,0 +1,14 @@
+###GitHub
+
+GitHub is the best place to share code with friends, co-workers, classmates, and complete strangers.
+Over six million people use GitHub to build amazing things together.
+
+###Install Notes
+
+If you are on this page you have already connected to GitHub using OAuth. Now please enter the name
+of the repository for which you want statistics.
+
+Generally this should be in the form `organization_name/repository_name`.
+
+Each week we see how many commits, new issues, closed issues and pull requests have been done in this
+repository.
