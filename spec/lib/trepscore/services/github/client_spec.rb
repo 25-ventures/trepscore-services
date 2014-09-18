@@ -1,6 +1,6 @@
 require 'trepscore/services/github'
 
-describe ::Github::Client do
+describe TrepScore::Services::GitHub::Client do
   let(:octokit) do
     double('Octokit client', commits: [], list_issues: [], same_options?: false)
   end
@@ -29,7 +29,7 @@ describe ::Github::Client do
         { commit: { author: { date: (Date.today + 1).to_time } } },
       ]
     end
-    metrics = Github::Client.new(data).metrics
+    metrics = described_class.new(data).metrics
     expect(metrics[:total_commits]).to equal(2)
   end
 
@@ -41,7 +41,7 @@ describe ::Github::Client do
         { created_at:  (Date.today + 1).to_time, closed_at: (Date.today + 1).to_time },
       ]
     end
-    metrics = Github::Client.new(data).metrics
+    metrics = described_class.new(data).metrics
     expect(metrics[:open_issues]).to equal(2)
   end
 end

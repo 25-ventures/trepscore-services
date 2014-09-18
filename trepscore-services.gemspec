@@ -23,10 +23,13 @@ Gem::Specification.new do |spec|
   #=============================================================================
   # Service Specific dependencies get added here
   #=============================================================================
+
+  # Pipedrive
   spec.add_dependency 'pipedrive-client'
 
-  # GitHub Integration
+  # GitHub
   spec.add_dependency 'octokit',              '>= 3.3.0'
+  spec.add_dependency 'omniauth-github'
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"

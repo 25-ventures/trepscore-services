@@ -1,6 +1,6 @@
 require 'octokit'
 
-class Github::Client
+class TrepScore::Services::GitHub::Client
   attr_accessor :repo, :token, :id, :period
 
   def initialize(data)

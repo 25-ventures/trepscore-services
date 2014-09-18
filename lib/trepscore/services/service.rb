@@ -271,9 +271,10 @@ module TrepScore
         #     end
         #   end
         #
-        def oauth(provider:nil, &blk)
+        def oauth(provider:nil, scope:nil, &blk)
           @oauth ||= {
             provider: provider,
+            scope: scope,
             filter: blk
           }
         end
