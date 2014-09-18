@@ -3,7 +3,6 @@ ruby '2.1.1'
 
 gemspec
 
-
 gem 'rake'
 
 group :development do
@@ -18,4 +17,14 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'terminal-notifier-guard'
+
+
+  # Testing with interface
+  gem 'sinatra'
+  gem 'sinatra-contrib'
+  gem 'omniauth'
+  gem 'thin'
+  gem 'haml'
+  gem 'redcarpet'
+
 end

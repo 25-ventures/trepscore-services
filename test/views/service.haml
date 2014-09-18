@@ -1,0 +1,173 @@
+.page-header
+  %h1
+    TrepScore Service Integration
+    .pull-right
+      %a.btn.btn-default{href: '/'}
+        %i.fa.fa-chevron-left
+        Return to Services List
+      %a.btn.btn-default{href: 'https://github.com/25-ventures/trepscore-services', data: {toggle: 'tooltip', placement: 'top', title: 'GitHub Repository'}}
+        %i.fa.fa-github
+      %a.btn.btn-default{href: 'https://github.com/25-ventures/trepscore-services/wiki/Integrations', data: {toggle: 'tooltip', placement: 'top', title: 'Documentation'}}
+        %i.fa.fa-book
+
+.row
+  / main column
+  .col-md-8
+
+    / documentation
+    - if @service.documentation != ''
+      %section
+        %aside Documentation
+        %article
+          :markdown
+            #{@service.documentation}
+    - else
+      - if @service.oauth? && @service.schema.empty?
+        .callout.callout-info
+          %h4 The optional documentation is missing
+          %p
+            When an integration uses OAuth and does not require any additional data, end-user documentation is not strictly required.
+          %p
+            Documentation may be added by creating the file
+            %code docs/#{@service.hook_name}
+            and filling it with markdown that describes the service.
+      -else
+        .callout.callout-warning
+          %h4 The documentation is missing
+          %p
+            Add documentation by creating the file
+            %code docs/#{@service.hook_name}
+            and filling it with markdown that describes the service and any required fields.
+
+    / oauth dance
+    -if @service.oauth?
+      %section
+        %aside OAuth
+        %article
+          - if @oauth_env_ready
+            - if @oauth_data.empty?
+              %a.btn.btn-success{href: "/auth/#{@service.oauth[:provider]}"}
+                %i.fa.fa-chain
+                Connect via OAuth
+            - else
+              .page-header
+                %h3
+                  OAuth data
+                  %small As filtered by the #{@service.title} integration
+                  .pull-right
+                    %form{role: 'form', method: :post}
+                      %input{type: :hidden, name: '_method', value: :delete}
+                      %button{type: 'submit', name: 'oauth-purge', class: 'btn btn-sm btn-default'}
+                        %i.fa.fa-trash-o
+                        Clear OAuth Data
+              %dl
+                - @oauth_data.each do |key, value|
+                  %dt= key
+                  %dd= value
+
+          - else
+            .callout.callout-warning
+              %h4 OAuth keys are missing for this provider
+              %p
+                To test OAuth, you'll have to provide the environment variables for the omniauth provider. Just edit
+                %code test/config.yml
+                adding the entries below.
+                %pre
+                  %code
+                    :preserve
+                      #{@service.oauth[:provider]}_key: '...'
+                      #{@service.oauth[:provider]}_secret: '...'
+
+            %a.btn.btn-success.disabled{href: "/auth/developer"}
+              %i.fa.fa-chain
+              Connect via OAuth
+
+    / settings form
+    - if @service.schema.empty?
+      .callout.callout-info
+        %h4 There are no custom fields
+        %p Sometimes an integration doesn't need to know anything other than the user and that's perfectly okay.
+    - else
+      %section
+        %aside Settings
+        %article
+          %form{role: 'form', method: :post}
+            - @service.schema.each do |type, field, schema_flag|
+              .form-group
+                %label.text-capitalize{for: field}= field
+                %input.form-control{type: type, name: field, value: @data[field.to_s]}
+                - if schema_flag == :required
+                  %p.help-block required field
+            %button{type: 'submit', class: 'btn btn-primary'} Save Settings
+
+    / runner
+    - if !@integration_data.empty?
+      %section
+        %aside Integration Payload
+        %article
+          .panel.panel-default
+            .panel-body
+              %dl
+                - @integration_data.each do |key, value|
+                  %dt= key
+                  %dd= value
+          %form{role: 'form', method: :post, action: "/service/#{@service.hook_name}/call"}
+            .form-group
+              %label{for: 'range-start'} Date Range
+              .input-daterange.input-group
+                %input.form-control.input-sm.datepicker{name: 'range-start', placeholder: 'Start'}
+                %span.input-group-addon to
+                %input.form-control.input-sm.datepicker{name: 'range-end', placeholder: 'End'}
+
+            %button{type: 'submit', name: 'call-service', class: 'btn btn-primary'}
+              %i.fa.fa-truck
+              Call Service with Payload
+
+
+    - if !@last_response.empty?
+      %section
+        %aside Integration Response
+        %article
+          %pre
+            %code
+              :preserve
+                #{@last_response.to_hash}
+
+
+
+  / meta-data column
+  .col-md-4
+    %dl
+      %dt Service Title
+      %dd= @service.title
+
+      %dt Hook Name
+      %dd= @service.hook_name
+
+      %dt Category
+      %dd= @service.category
+
+      %dt Website
+      %dd= @service.url
+
+      %dt Maintainers
+      %dd
+        - if @maintainers.empty?
+          %i.fa.fa-group
+          The TrepScore Team
+        - else
+          %ul.list-unstyled.maintainers
+            = list_of(@maintainers) do |maintainer|
+              - case maintainer.first
+              - when :github
+                %i.fa.fa-github
+              - when :email
+                %i.fa.fa-envelope-o
+              - when :web
+                %i.fa.fa-globe
+
+              = maintainer.last
+
+      %dt Logo
+      %dd
+        %img.item-image{src: (@service.logo_url || "https://sigil.cupcake.io/#{@service.hook_name}"), width: 48, height: 48}

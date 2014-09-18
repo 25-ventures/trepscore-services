@@ -1,0 +1,48 @@
+.page-header
+  %h1
+    TrepScore Services
+    .pull-right
+      %a.btn.btn-default{href: 'https://github.com/25-ventures/trepscore-services'}
+        %i.fa.fa-github
+        GitHub Repo
+      %a.btn.btn-default{href: 'https://github.com/25-ventures/trepscore-services/wiki/Integrations'}
+        %i.fa.fa-book
+        Documentation
+
+
+%ul.table-list.list-unstyled
+  = list_of(@services, {class: 'table-list-item'}) do |service|
+    .item-info.table-list-cell
+      %img.item-image{src: (service.logo_url || "https://sigil.cupcake.io/#{service.hook_name}"), width: 48, height: 48}
+      %span.item-name= service.title
+      %span.item-context :#{service.hook_name}
+    .item-meta.table-list-cell
+      %span.item-category= service.category
+    .item-meta.table-list-cell
+
+      %span.item-supports
+        - if service.oauth?
+          %i.fa.fa-check-square-o
+        - else
+          %i.fa.fa-square-o
+        OAuth
+
+      %span.item-supports
+        - if service.documentation != ''
+          %i.fa.fa-check-square-o
+        - else
+          %i.fa.fa-square-o
+        Documentation
+
+      %span.item-supports
+        - if !service.schema.empty?
+          %i.fa.fa-check-square-o
+        - else
+          %i.fa.fa-square-o
+        Custom Fields
+
+    .item-actions.table-list-cell
+      %a.btn.btn-primary{href: "/service/#{service.hook_name}"}
+        %i.fa.fa-crosshairs
+        Details & Test
+

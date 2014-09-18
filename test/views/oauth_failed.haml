@@ -1,0 +1,11 @@
+.callout.callout-warning
+  %h4 General OAuth failure
+  %p
+    OmniAuth was unable to authenticate against your provider using the
+    %code= @strategy
+    strategy.
+  %p
+    The error message returned along with this failure is:
+    %code= @reason
+
+  %p Maybe you should <a href="/">go back to the beginning</a> and try again.
