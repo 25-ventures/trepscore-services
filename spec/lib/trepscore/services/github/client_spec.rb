@@ -21,27 +21,45 @@ describe TrepScore::Services::GitHub::Client do
     allow(Octokit::Client).to receive(:new) { octokit }
   end
 
+  let(:metrics) { described_class.new(data).metrics }
+
   it 'returns the total number of commits' do
     allow(octokit).to receive(:commits) do
       [
         { commit: { author: { date: (Date.today - 5).to_time } } },
-        { commit: { author: { date: (Date.today - 1).to_time } } },
+        # Be sure to test we can find things within the end date
+        { commit: { author: { date: (Date.today).to_time + 1000 } } },
         { commit: { author: { date: (Date.today + 1).to_time } } },
       ]
     end
-    metrics = described_class.new(data).metrics
+
     expect(metrics[:total_commits]).to equal(2)
   end
 
-  it 'returns the number of issues open in the period' do
-    allow(octokit).to receive(:list_issues) do
-      [
-        { created_at:  (Date.today - 5).to_time, closed_at: (Date.today - 5).to_time },
-        { created_at:  (Date.today - 1).to_time, closed_at: (Date.today - 1).to_time },
-        { created_at:  (Date.today + 1).to_time, closed_at: (Date.today + 1).to_time },
-      ]
+  context 'issues' do
+    before do
+      allow(octokit).to receive(:list_issues) do
+        [
+          { created_at: (Date.today - 5).to_time, state: 'open' },
+          { created_at: (Date.today - 4).to_time, state: 'closed' },
+          { created_at: (Date.today - 3).to_time, state: 'open', pull_request: {} },
+          # Be sure to test we can find things within the end date
+          { created_at: (Date.today).to_time + 1000, state: 'open' },
+          { created_at: (Date.today + 1).to_time },
+        ]
+      end
     end
-    metrics = described_class.new(data).metrics
-    expect(metrics[:open_issues]).to equal(2)
+
+    it 'returns the number of issues open in the period' do
+      expect(metrics[:open_issues]).to eq 2
+    end
+
+    it 'returns the number of issues closed in the period' do
+      expect(metrics[:closed_issues]).to eq 1
+    end
+
+    it 'returns the number of pull requests in the period' do
+      expect(metrics[:pull_requests]).to eq 1
+    end
   end
 end

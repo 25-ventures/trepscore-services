@@ -3,7 +3,7 @@ require 'omniauth-github'
 module TrepScore
   module Services
     class GitHub < Service
-      # TODO: This is not used
+      # This is not used yet, but will be needed for any files stats (lines added, etc.)
       class StatsNotReady < StandardError; end
 
       category :developer_tools
@@ -45,4 +45,5 @@ module TrepScore
   end
 end
 
+# Require this last because it depends on the above being defined
 require 'trepscore/services/github/client'

@@ -11,105 +11,62 @@ class TrepScore::Services::GitHub::Client
   end
 
   def metrics
+    # We do weekly increments so we can use this
+    Octokit.auto_paginate
+
     {
       total_commits: total_commits,
       open_issues: open_issues,
       closed_issues: closed_issues,
+      pull_requests: pull_requests
     }
   end
 
   protected
 
   def start_time
-    period.first.to_time
+    @start_time ||= period.first.to_time
   end
 
-  def end_time
-    period.last.to_time
+  def end_date
+    @end_date ||= period.last
   end
 
   def total_commits
-    more = true
-    page = 0
-    total = 0
-    while more
-      commits = octokit.commits(repo, nil, since: start_time, page: page)
+    commits = octokit.commits(repo, nil, since: start_time)
 
-      relevant = commits.select { |c| c[:commit][:author][:date] <= end_time }.length
-      # binding.pry
-      total += relevant
-      if commits.length == relevant && relevant > 0
-        page += 1
-      else
-        more = false
-      end
+    # Filter down to those before the end date. Use a date because if we convert
+    # the date to a time, it becomes that date at 00:00:00, so any commits later
+    # in the day on that date are missed.
+    commits.select { |c| c[:commit][:author][:date].to_date <= end_date }.length
+  end
+
+  def issues
+    @issues ||= begin
+      issues = octokit.list_issues(repo, state: :all, since: start_time)
+
+      issues.select { |i| i[:created_at].to_date <= end_date }
     end
+  end
 
-    total
+  # GitHub issues include Pull Requests, filter those out
+  def actual_issues
+    @actual_issues ||= issues.select { |i| i[:pull_request].nil? }
+  end
+
+  def pull_requests
+    issues.select { |i| !i[:pull_request].nil? }.length
   end
 
   def open_issues
-    more = true
-    page = 0
-    total = 0
-    while more
-
-      # list issues updated after start time
-      options = {
-        state: :all,
-        since: start_time,
-        sort: 'created',
-        direction: 'asc',
-        page: page,
-      }
-
-      issues = octokit.list_issues(repo, options)
-
-      relevant = issues.select { |i| i[:created_at] <= end_time }.length
-
-      total += relevant
-      if issues.length == relevant && relevant > 0
-        page += 1
-      else
-        more = false
-      end
-    end
-
-    total
+    actual_issues.select { |i| i[:state] == 'open' }.length
   end
 
   def closed_issues
-    more = true
-    page = 0
-    total = 0
-    while more
-
-      # list issues updated after start time
-      options = {
-        state: :closed,
-        since: start_time,
-        sort: 'created',
-        direction: 'asc',
-        page: page,
-      }
-
-      issues = octokit.list_issues(repo, options)
-
-      relevant = issues.select { |i| i[:closed_at] <= end_time }.length
-
-      total += relevant
-
-      if issues.length == 0 || issues.any? { |i| i[:created_at] > end_time }
-        more = false
-      else
-        page += 1
-      end
-    end
-
-    total
+    actual_issues.select { |i| i[:state] == 'closed' }.length
   end
 
   def octokit
-    @octokit ||=  Octokit::Client.new(access_token: token)
+    @octokit ||= Octokit::Client.new(access_token: token)
   end
 end
