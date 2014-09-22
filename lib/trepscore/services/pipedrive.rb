@@ -9,6 +9,8 @@ module TrepScore
         string :token
       end
 
+      url 'http://www.pipedrive.com'
+
       def call(period)
         @period = period
         {
