@@ -7,6 +7,13 @@ class TestService < TrepScore::Services::Service
     string :token
   end
 
+  oauth(provider: :noop, scope: 'noop') do |response, params|
+    {
+      foo: response[:foo],
+      bar: params[:bar]
+    }
+  end
+
   def call(*)
     0
   end
@@ -48,6 +55,18 @@ describe TrepScore::Services::Service do
 
     it 'catches missing required fields' do
       expect { TestService.validate! }.to raise_error(TrepScore::ConfigurationError)
+    end
+  end
+
+  context '.ready?' do
+    it 'returns false when missing keys' do
+      expect(TestService.ready?(data)).to be_falsey
+    end
+
+    let(:oauth_data) { data.merge({foo: 123, 'bar' => 123}) }
+
+    it 'returns true when has keys' do
+      expect(TestService.ready?(oauth_data)).to be_truthy
     end
   end
 
