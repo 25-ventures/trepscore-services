@@ -2,6 +2,16 @@ require 'descendants_tracker'
 
 module TrepScore
   module Services
+
+    class NullHash
+      class << self
+        def [](key)
+          self
+        end
+        alias_method :fetch, :[]
+      end
+    end
+
     class Service
       extend DescendantsTracker
 
@@ -318,12 +328,29 @@ module TrepScore
           end
         end
 
+        def valid?(data = {})
+          validate(data).empty?
+        end
+
         # Test that the data is acceptable to the external service and
         # raise a configuration error if it is not.
         def test(data = {})
           make_hash_indifferent(data)
           validate!(data)
           new(data).test
+        end
+
+        def ready?(data = {})
+          make_hash_indifferent(data)
+
+          oauth_ready = if oauth?
+            keys = oauth[:filter].call(NullHash, NullHash).keys
+            oauth_ready = keys.all? {|k| !data[k].nil? }
+          else
+            true
+          end
+
+          oauth_ready && valid?(data)
         end
 
         # Call the service and collect the data points.
