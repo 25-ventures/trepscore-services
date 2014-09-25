@@ -32,9 +32,10 @@ module Quickbooks
       def value_of(group)
         nodes = @last_response_xml.css("Row[group=#{group}] Summary ColData:last")
         if nodes.nil? || nodes.empty?
-          0.0
+          0
         else
-          nodes.first['value'].to_f
+          # Convert to cent values
+          (nodes.first['value'].to_f * 100).to_i
         end
       end
     end
