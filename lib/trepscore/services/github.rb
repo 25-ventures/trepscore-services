@@ -13,7 +13,7 @@ module TrepScore
       end
 
       url 'http://github.com'
-      # url_logo 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Logo.png'
+      logo_url 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png'
 
       maintained_by github: 'federomero',
                     email:  'hi@federomero.uy',
