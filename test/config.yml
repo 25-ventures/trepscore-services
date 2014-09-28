@@ -1,2 +1,3 @@
-github_key: f8d3afd3b19785a112bb
-github_secret: 82145ff06b6a6bdc916c957fa2ad2e907eac4e75
+# Put your keys here in the form of "hook_name_key, hook_name_secret"
+github_key:
+github_secret:
