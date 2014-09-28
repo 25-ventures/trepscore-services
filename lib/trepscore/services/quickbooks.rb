@@ -9,16 +9,9 @@ module Quickbooks
   module Service
     class Reports < BaseService
       def profit_and_loss(params = {})
-        url = url_for_resource('reports/ProfitAndLoss')
-        url = add_query_string_to_url(url, params)
-        do_http_get(url)
-        xml = @last_response_xml
+        run_report('ProfitAndLoss', params)
 
         {
-          reportName: xml.css('ReportName').text,
-          reportBasis: xml.css('ReportBasis').text,
-          startPeriod: xml.css('StartPeriod').text.to_date,
-          endPeriod: xml.css('EndPeriod').text.to_date,
           totalIncome: value_of('Income'),
           grossProfit: value_of('GrossProfit'),
           expenses: value_of('Expenses'),
@@ -29,12 +22,32 @@ module Quickbooks
         }
       end
 
+      def balance_sheet(params = {})
+        run_report('BalanceSheet', params)
+
+        {
+          totalAssets: value_of("TotalAssets"),
+          ar: value_of("AR"),
+          ap: value_of("AP"),
+          liabilities: value_of("Liabilities"),
+          equity: value_of("Equity"),
+        }
+      end
+
+      def run_report(name, params = {})
+        url = url_for_resource("reports/#{name}")
+        url = add_query_string_to_url(url, params)
+        do_http_get(url)
+        @last_response_xml
+      end
+
       def value_of(group)
         nodes = @last_response_xml.css("Row[group=#{group}] Summary ColData:last")
         if nodes.nil? || nodes.empty?
-          0.0
+          0
         else
-          nodes.first['value'].to_f
+          # Convert to cent values
+          (nodes.first['value'].to_f * 100).to_i
         end
       end
     end
@@ -65,11 +78,19 @@ module TrepScore
         start_date = period.first.strftime('%Y-%m-%d')
         end_date   = period.last.strftime('%Y-%m-%d')
 
-        report = client.profit_and_loss(start_date: start_date, end_date: end_date)
+        balance_sheet = client.balance_sheet(start_date: start_date, end_date: end_date)
+        profit_and_loss = client.profit_and_loss(start_date: start_date, end_date: end_date)
 
         {
-          income: report[:totalIncome],
-          expenses: report[:expenses] + report[:otherExpenses],
+          ar_balance: balance_sheet[:ar],
+          # Invert this since in TrepScore we want everything positive
+          ap_balance: -balance_sheet[:ap],
+          revenue: profit_and_loss[:grossProfit],
+          current_assets: balance_sheet[:totalAssets],
+          # Same as above
+          current_liabilities: -balance_sheet[:liabilities],
+          income: profit_and_loss[:totalIncome],
+          expenses: profit_and_loss[:expenses] + profit_and_loss[:otherExpenses],
         }
       end
 
