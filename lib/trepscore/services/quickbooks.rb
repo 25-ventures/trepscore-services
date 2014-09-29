@@ -78,8 +78,13 @@ module TrepScore
         start_date = period.first.strftime('%Y-%m-%d')
         end_date   = period.last.strftime('%Y-%m-%d')
 
-        balance_sheet = client.balance_sheet(start_date: start_date, end_date: end_date)
-        profit_and_loss = client.profit_and_loss(start_date: start_date, end_date: end_date)
+        begin
+          balance_sheet = client.balance_sheet(start_date: start_date, end_date: end_date)
+          profit_and_loss = client.profit_and_loss(start_date: start_date, end_date: end_date)
+        rescue ::Quickbooks::AuthorizationFailure
+          raise TrepScore::ConfigurationError.new(
+            'It appears your QuickBooks authorization information is wrong')
+        end
 
         {
           ar_balance: balance_sheet[:ar],
