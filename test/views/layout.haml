@@ -1,0 +1,18 @@
+!!!
+
+%head
+  %title TrepScore Services - Testing Harness
+  %link{href: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css', rel: 'stylesheet'}
+  %link{href: '//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', rel: 'stylesheet'}
+
+  %link{href: '/stylesheets/application.css', rel: 'stylesheet'}
+  %link{href: '/stylesheets/datepicker3.css', rel: 'stylesheet'}
+%body
+  .container
+    .row
+      .col-sm-10.col-sm-offset-1= yield
+
+%script{src: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js'}
+%script{src: 'https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'}
+%script{src: '/javascripts/bootstrap-datepicker.js'}
+%script{src: '/javascripts/application.js'}

@@ -291,7 +291,7 @@ module TrepScore
 
         # Helper used to determine if the service is using OAuth.
         def oauth?
-          !@oauth.nil?
+          !oauth.values.all?(&:nil?)
         end
 
         #############################
