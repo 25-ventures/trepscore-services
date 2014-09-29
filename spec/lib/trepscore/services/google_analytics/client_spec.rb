@@ -1,6 +1,6 @@
 require 'trepscore/services/google_analytics'
 
-describe TrepScore::Services::GoogleAnalytics::Client, :focus do
+describe TrepScore::Services::GoogleAnalytics::Client do
   let(:user) do
     double('Legato User', accounts: accounts)
   end
