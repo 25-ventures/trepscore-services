@@ -116,7 +116,7 @@ class TrepScoreServicesWeb < Sinatra::Base
       @period = (@range_start..@range_end)
 
       begin
-        response = @service.new(@integration_data).call(@period)
+        response = @service.call(data: @integration_data, period: @period)
         session[@service.hook_name + '_last_response'] = response
 
         redirect "/service/#{@service.hook_name}"
