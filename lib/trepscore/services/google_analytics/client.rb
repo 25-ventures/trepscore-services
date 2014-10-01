@@ -9,15 +9,14 @@ module TrepScore
         metrics :users, :newUsers, :percentNewSessions, :bounceRate, :avgSessionDuration, :pageviews
       end
 
-
       class Client
-        attr_accessor :account_name, :profile_name, :access_token, :period
+        attr_accessor :account_name, :profile_name, :token, :period
 
         def initialize(data)
-          self.period = data[:period]
           self.account_name = data[:account]
           self.profile_name = data[:profile]
-          self.access_token = data[:access_token]
+          self.token = data[:token]
+          self.period = data[:period]
         end
 
         def metrics
@@ -34,6 +33,19 @@ module TrepScore
         end
 
         protected
+
+        def access_token
+          @access_token ||= begin
+            client = OAuth2::Client.new(ENV['GOOGLE_OAUTH2_KEY'], ENV['GOOGLE_OAUTH2_SECRET'], {
+              authorize_url: 'https://accounts.google.com/o/oauth2/auth',
+              token_url: 'https://accounts.google.com/o/oauth2/token',
+            })
+
+            client.auth_code.authorize_url(access_type: 'offline')
+
+            OAuth2::AccessToken.from_hash(client, access_token: token)
+          end
+        end
 
         def user
           @user ||= Legato::User.new(access_token)
