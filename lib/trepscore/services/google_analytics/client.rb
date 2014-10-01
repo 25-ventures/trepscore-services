@@ -52,11 +52,23 @@ module TrepScore
         end
 
         def account
-          @account ||= user.accounts.find{|a| a.name == account_name }
+          @account ||= begin
+            account = user.accounts.find{|a| a.name == account_name }
+            if account.nil?
+              raise TrepScore::ConfigurationError.new("Could not find an account named '#{account_name}'")
+            end
+            account
+          end
         end
 
         def profile
-          @profile ||= account.profiles.find{|p| p.name == profile_name }
+          @profile ||= begin
+            profile = account.profiles.find{|p| p.name == profile_name }
+            if profile.nil?
+              raise TrepScore::ConfigurationError.new("Could not find a profile named '#{profile_name}'")
+            end
+            profile
+          end
         end
 
         def start_date
