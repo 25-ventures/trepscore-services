@@ -6,7 +6,8 @@ module TrepScore
       class Page
         extend Legato::Model
 
-        metrics :users, :newUsers, :percentNewSessions, :bounceRate, :avgSessionDuration, :pageviews
+        metrics :sessions, :users, :newUsers, :percentNewSessions, :bounceRate,
+          :avgSessionDuration, :pageviews
       end
 
       class Client
@@ -23,11 +24,12 @@ module TrepScore
           result = Page.results(profile, start_date: start_date, end_date: end_date).first
 
           {
-            users: result.users,
-            new_users: result.newUsers,
-            percent_new_sessions: result.percentNewSessions,
+            total_visits: result.sessions,
+            unique_visits: result.users,
+            new_visits: result.newUsers,
+            percent_new_visits: result.percentNewSessions,
             bounce_rate: result.bounceRate,
-            avg_session_duration: result.avgSessionDuration,
+            average_visit_duration: result.avgSessionDuration,
             page_views: result.pageviews
           }
         end

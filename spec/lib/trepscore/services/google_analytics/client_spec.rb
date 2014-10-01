@@ -68,7 +68,7 @@ describe TrepScore::Services::GoogleAnalytics::Client do
   let(:metrics) { described_class.new(data).metrics }
 
   it 'returns the metrics' do
-    expect(metrics[:users]).to eq(10)
+    expect(metrics[:unique_visits]).to eq(10)
   end
 
   context 'when the account does not exist' do
