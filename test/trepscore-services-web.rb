@@ -40,12 +40,14 @@ class TrepScoreServicesWeb < Sinatra::Base
       oauth = service.oauth
       provider = oauth[:provider].to_sym
 
-      key = settings.send("#{provider}_key") if settings.respond_to? "#{provider}_key"
-      secret = settings.send("#{provider}_secret") if settings.respond_to? "#{provider}_secret"
+      key_name = "#{provider}_key"
+      secret_name = "#{provider}_secret"
+      key = settings.send(key_name) if settings.respond_to? key_name
+      secret = settings.send(secret_name) if settings.respond_to? secret_name
 
       if !key.nil? && !secret.nil?
-        ENV[key.upcase] = key
-        ENV[secret.upcase] = secret
+        ENV[key_name.upcase] = key
+        ENV[secret_name.upcase] = secret
 
         use OmniAuth::Builder do
           provider provider, key, secret, scope: oauth[:scope]
