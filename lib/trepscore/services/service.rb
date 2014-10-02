@@ -262,10 +262,13 @@ module TrepScore
           File.exists?(doc_file) ? File.read(doc_file) : ""
         end
 
-        # Define the oauth provider and a filter for the OmniAuth response. This
-        # should map to a provider defined for OmniAuth, the oauth library we use
-        # for authenticating against third party services. Include the integration
-        # library for OmniAuth in the Gemfile.
+        # Define the OAuth provider, scope, extra options and a filter for the
+        # OmniAuth response. The provider name should map to a provider defined for
+        # OmniAuth, the OAuth library we use for authenticating against third
+        # party services. Include the integration library for OmniAuth in the
+        # Gemfile. The scope should be the scope which is sometimes needed when
+        # requesting OAuth access. Extra options will be passed in when
+        # configuring this provider in OmniAuth.
         #
         # The filter block receives two arguments, the response hash and an `extra`
         # hash with any other POST/GET parameters.
@@ -281,10 +284,11 @@ module TrepScore
         #     end
         #   end
         #
-        def oauth(provider:nil, scope:nil, &blk)
+        def oauth(provider:nil, scope:nil, options:nil, &blk)
           @oauth ||= {
             provider: provider,
             scope: scope,
+            options: options,
             filter: blk
           }
         end

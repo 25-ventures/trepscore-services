@@ -49,8 +49,16 @@ class TrepScoreServicesWeb < Sinatra::Base
         ENV[key_name.upcase] = key
         ENV[secret_name.upcase] = secret
 
+        options = { scope: oauth[:scope] }
+
+        unless oauth[:options].nil?
+          oauth[:options].each do |key, value|
+            options[key.to_sym] = value
+          end
+        end
+
         use OmniAuth::Builder do
-          provider provider, key, secret, scope: oauth[:scope]
+          provider provider, key, secret, options
         end
 
         OAUTH_SERVICES[provider] = service

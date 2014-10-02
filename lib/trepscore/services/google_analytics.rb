@@ -3,7 +3,7 @@ require 'omniauth-google-oauth2'
 module TrepScore
   module Services
     class GoogleAnalytics < Service
-      SCOPE = 'email https://www.googleapis.com/auth/analytics.readonly'
+      SCOPE = 'analytics.readonly,userinfo.profile'
       category :analytics
 
       required do
@@ -17,9 +17,12 @@ module TrepScore
                     email:  'hi@federomero.uy',
                     web:    'http://federomero.uy'
 
-      oauth(provider: :google_oauth2, scope: SCOPE) do |response, _|
+      # The prompt param is needed so we get a refresh_token
+      oauth(provider: :google_oauth2, scope: SCOPE, options: { prompt: 'consent' }) do |response, _|
         {
           token: response['credentials']['token'],
+          expires_at: response['credentials']['expires_at'],
+          refresh_token: response['credentials']['refresh_token'],
         }
       end
 
