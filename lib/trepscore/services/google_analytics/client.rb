@@ -38,14 +38,12 @@ module TrepScore
 
         def access_token
           @access_token ||= begin
-            client = OAuth2::Client.new(ENV['GOOGLE_OAUTH2_KEY'], ENV['GOOGLE_OAUTH2_SECRET'], {
-              authorize_url: 'https://accounts.google.com/o/oauth2/auth',
-              token_url: 'https://accounts.google.com/o/oauth2/token',
-            })
+            # The first param is the Rack app, but we don't need it here
+            middleware = OmniAuth::Strategies::GoogleOauth2.new(nil,
+              client_id: ENV['GOOGLE_OAUTH2_KEY'],
+              client_secret: ENV['GOOGLE_OAUTH2_SECRET'])
 
-            client.auth_code.authorize_url(access_type: 'offline')
-
-            OAuth2::AccessToken.from_hash(client, access_token: token)
+            OAuth2::AccessToken.from_hash(middleware.client, access_token: token)
           end
         end
 
