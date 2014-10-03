@@ -284,7 +284,7 @@ module TrepScore
         #     end
         #   end
         #
-        def oauth(provider:nil, scope:nil, options:nil, &blk)
+        def oauth(provider:nil, scope:nil, options:{}, &blk)
           @oauth ||= {
             provider: provider,
             scope: scope,
@@ -295,7 +295,7 @@ module TrepScore
 
         # Helper used to determine if the service is using OAuth.
         def oauth?
-          !oauth.values.all?(&:nil?)
+          !@oauth.nil?
         end
 
         #############################

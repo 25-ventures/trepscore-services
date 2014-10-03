@@ -51,10 +51,8 @@ class TrepScoreServicesWeb < Sinatra::Base
 
         options = { scope: oauth[:scope] }
 
-        unless oauth[:options].nil?
-          oauth[:options].each do |key, value|
-            options[key.to_sym] = value
-          end
+        oauth[:options].each do |key, value|
+          options[key.to_sym] = value
         end
 
         use OmniAuth::Builder do
