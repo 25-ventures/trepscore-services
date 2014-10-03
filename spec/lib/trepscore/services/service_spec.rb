@@ -7,13 +7,6 @@ class TestService < TrepScore::Services::Service
     string :token
   end
 
-  oauth(provider: :noop, scope: 'noop') do |response, params|
-    {
-      foo: response[:foo],
-      bar: params[:bar]
-    }
-  end
-
   def call(*)
     0
   end
@@ -23,12 +16,57 @@ class TestService < TrepScore::Services::Service
   end
 end
 
+class OAuthService < TrepScore::Services::Service
+  oauth(:noop) do |config|
+    config.scope = 'noop'
+    config.options = { key: 'noop' }
+    config.filter = proc do |response, params|
+      {
+        foo: response[:foo],
+        bar: params[:bar]
+      }
+    end
+  end
+end
+
+class AnotherOAuthService < TrepScore::Services::Service
+  oauth(:something)
+end
+
 describe TrepScore::Services::Service do
   let(:range1) { Date.new(2014, 9, 1)..Date.new(2014, 9, 7) }
   let(:range2) { Date.new(2014, 9, 8)..Date.new(2014, 9, 14) }
 
   let(:data) { { 'token' => 'foo' } }
   let(:symbols_data) { { token: 'foo' } }
+
+  context 'oauth?' do
+    it 'can verify it supports OAuth' do
+      expect(TestService.oauth?).to be_falsey
+      expect(OAuthService.oauth?).to be_truthy
+    end
+  end
+
+  context 'oauth config hash' do
+    subject { OAuthService.oauth }
+
+    it 'has a provider' do
+      expect(subject.provider).to eq :noop
+      expect(AnotherOAuthService.oauth.provider).to eq :something
+    end
+
+    it 'has a scope' do
+      expect(subject.scope).to eq 'noop'
+    end
+
+    it 'has options' do
+      expect(subject.options).to eq(key: 'noop')
+    end
+
+    it 'can filter oauth responses' do
+      expect(subject[:filter]).to respond_to :call
+    end
+  end
 
   context '.validate' do
     it 'works with string keys' do
@@ -59,14 +97,24 @@ describe TrepScore::Services::Service do
   end
 
   context '.ready?' do
-    it 'returns false when missing keys' do
-      expect(TestService.ready?(data)).to be_falsey
+    it 'returns false when keys are missing' do
+      expect(TestService.ready?({})).to be_falsey
     end
 
-    let(:oauth_data) { data.merge({foo: 123, 'bar' => 123}) }
+    it 'returns true when all keys are present' do
+      expect(TestService.ready?(data)).to be_truthy
+    end
 
-    it 'returns true when has keys' do
-      expect(TestService.ready?(oauth_data)).to be_truthy
+    context 'oauth' do
+      let(:oauth_data) { data.merge({foo: 123, 'bar' => 123}) }
+
+      it 'returns false when keys are missing' do
+        expect(OAuthService.ready?(data)).to be_falsey
+      end
+
+      it 'returns true when all keys are present' do
+        expect(OAuthService.ready?(oauth_data)).to be_truthy
+      end
     end
   end
 
