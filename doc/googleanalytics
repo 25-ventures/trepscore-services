@@ -1,0 +1,27 @@
+### Google Analytics
+
+Your customers go everywhere; shouldn't your analytics? Google Analytics shows you the full customer
+picture across ads and videos, websites and social tools, tablets and smartphones. That makes it
+easier to serve your current customers and win new ones.
+
+### Install Notes
+
+If you are on this page you have already connected to Google Analytics using OAuth. Now please enter
+the name of the account and the profile under that account for which you want statistics.
+
+If you go to the Home section in your Google Analytics account, the account is usually near the top,
+and then underneath it are profiles, such as "All Web Site Data".
+
+Each week we see how many sessions, users, new users, and page views have occurred on in this
+account and profile, as well as the bounce rate, percentage of new sessions and average session
+duration. We use different terminology for these within our application, and the data mapping is
+like so:
+
+ * **TrepScore Name = Google Name**
+ * Total Visits = Sessions
+ * Unique Visits = Users
+ * New Visits = New Users
+ * Percent New Visits = Percent New Sessions
+ * Bounce Rate = Bounce Rate
+ * Average Visit Duration = Average Session Duration
+ * Page Views = Pageviews

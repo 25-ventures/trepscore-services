@@ -1,6 +1,6 @@
 require 'trepscore/services/google_analytics'
 
-describe TrepScore::Services::GoogleAnalytics::Client, :focus do
+describe TrepScore::Services::GoogleAnalytics::Client do
   let(:user) do
     double('Legato User', accounts: accounts)
   end
@@ -45,11 +45,14 @@ describe TrepScore::Services::GoogleAnalytics::Client, :focus do
   let(:end_date) { Date.today }
   let(:start_date) { Date.today - 7 }
 
+  let(:account_name) { 'account-name' }
+  let(:profile_name) { 'profile-name' }
+
   let(:data) do
     {
       token: 'secret-token',
-      account: 'account-name',
-      profile: 'profile-name',
+      account: account_name,
+      profile: profile_name,
       period: (start_date..end_date)
     }
   end
@@ -65,6 +68,23 @@ describe TrepScore::Services::GoogleAnalytics::Client, :focus do
   let(:metrics) { described_class.new(data).metrics }
 
   it 'returns the metrics' do
-    expect(metrics[:users]).to eq(10)
+    expect(metrics[:unique_visits]).to eq(10)
   end
+
+  context 'when the account does not exist' do
+    let(:account_name) { 'non-existant' }
+
+    it 'raises a configuration error' do
+      expect { metrics }.to raise_error(TrepScore::ConfigurationError)
+    end
+  end
+
+  context 'when the profile does not exist' do
+    let(:profile_name) { 'non-existant' }
+
+    it 'raises a configuration error' do
+      expect { metrics }.to raise_error(TrepScore::ConfigurationError)
+    end
+  end
+
 end
