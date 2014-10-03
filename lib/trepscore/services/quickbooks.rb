@@ -66,12 +66,14 @@ module TrepScore
                      email: 'ryan@trepscore.com',
                        web: 'http://www.trepscore.com'
 
-      oauth(provider: :quickbooks) do |response, params|
-        {
-          realm_id: params['realmId'],
-          token:    response['credentials']['token'],
-          secret:   response['credentials']['secret'],
-        }
+      oauth(:quickbooks) do |config|
+        config.filter = proc do |response, params|
+          {
+            realm_id: params['realmId'],
+            token:    response['credentials']['token'],
+            secret:   response['credentials']['secret'],
+          }
+        end
       end
 
       def call(period)

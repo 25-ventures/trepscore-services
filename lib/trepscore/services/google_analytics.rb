@@ -16,15 +16,16 @@ module TrepScore
                     email:  'hi@federomero.uy',
                     web:    'http://federomero.uy'
 
-      # The prompt param is needed so we get a refresh_token
-      oauth(provider: :google_oauth2,
-        scope: 'email,analytics.readonly',
-        options: { prompt: 'consent' }) do |response, _|
-        {
-          token: response['credentials']['token'],
-          expires_at: response['credentials']['expires_at'],
-          refresh_token: response['credentials']['refresh_token'],
-        }
+      oauth(:google_oauth2) do |config|
+        config.scope   = 'email,analytics.readonly'
+        config.options = { prompt: 'consent' }  # Needed so we get a refresh_token
+        config.filter  = proc do |response, params|
+          {
+            token: response['credentials']['token'],
+            expires_at: response['credentials']['expires_at'],
+            refresh_token: response['credentials']['refresh_token'],
+          }
+        end
       end
 
       def call(period)
