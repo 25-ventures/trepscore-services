@@ -19,11 +19,14 @@ module TrepScore
                     email:  'hi@federomero.uy',
                     web:    'http://federomero.uy'
 
-      oauth(provider: :github, scope: 'user,repo') do |response, _|
-        {
-          token: response['credentials']['token'],
-          id: response['uid'],
-        }
+      oauth(:github) do |config|
+        config.scope  = 'user,repo'
+        config.filter = proc do
+          {
+            token: response['credentials']['token'],
+            id: response['uid'],
+          }
+        end
       end
 
       def call(period)

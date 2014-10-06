@@ -1,4 +1,5 @@
 require 'descendants_tracker'
+require 'ostruct'
 
 module TrepScore
   module Services
@@ -276,21 +277,22 @@ module TrepScore
         # Example:
         #
         #   class FooService < Service
-        #     oauth(provider: :github) do |response, extra|
-        #       {
-        #          realm_id: extra['realmId'],
-        #          credentials: response['credentials']
-        #       }
+        #     oauth(:github) do |config|
+        #       config.scope   = 'user,some_scope'
+        #       config.options = {grant: 'consent'}
+        #       config.filter  = proc do |response, extra|
+        #         {
+        #            realm_id: extra['realmId'],
+        #            credentials: response['credentials']
+        #         }
+        #       end
         #     end
         #   end
         #
-        def oauth(provider:nil, scope:nil, options:{}, &blk)
-          @oauth ||= {
-            provider: provider,
-            scope: scope,
-            options: options,
-            filter: blk
-          }
+        def oauth(provider = nil)
+          @oauth ||= OpenStruct.new(provider: provider, options: {}).tap do |o|
+            yield o if block_given?
+          end
         end
 
         # Helper used to determine if the service is using OAuth.
