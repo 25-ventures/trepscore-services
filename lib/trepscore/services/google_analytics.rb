@@ -18,7 +18,7 @@ module TrepScore
 
       # The prompt param is needed so we get a refresh_token
       oauth(provider: :google_oauth2,
-        scope: 'analytics.readonly,userinfo.profile',
+        scope: 'email,analytics.readonly',
         options: { prompt: 'consent' }) do |response, _|
         {
           token: response['credentials']['token'],
