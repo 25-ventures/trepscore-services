@@ -7,4 +7,6 @@ $(function(){
     todayHighlight: true,
     format: "yyyy-mm-dd",
   });
+
+  $('select').selectpicker();
 });
