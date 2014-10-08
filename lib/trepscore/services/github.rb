@@ -21,7 +21,7 @@ module TrepScore
 
       oauth(:github) do |config|
         config.scope  = 'user,repo'
-        config.filter = proc do
+        config.filter = proc do |response, params|
           {
             token: response['credentials']['token'],
             id: response['uid'],
