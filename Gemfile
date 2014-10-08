@@ -4,6 +4,7 @@ ruby '2.1.1'
 gemspec
 
 gem 'rake'
+gem 'omniauth-basecamp', github: 'NetsoftHoldings/omniauth-basecamp'
 
 group :development do
   gem 'pry'
@@ -26,5 +27,4 @@ group :development do
   gem 'thin'
   gem 'haml'
   gem 'redcarpet'
-
 end

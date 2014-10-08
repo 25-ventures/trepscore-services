@@ -40,6 +40,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'legato', '>= 0.3.3'
   spec.add_dependency 'omniauth-google-oauth2', '>= 0.2.5'
 
+  # Basecamp
+  # spec.add_dependency 'omniauth-basecamp'
+  spec.add_dependency 'faraday'
+
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
   spec.files += Dir.glob("lib/**/*.rb")

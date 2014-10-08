@@ -1,9 +1,17 @@
+GIT
+  remote: git://github.com/NetsoftHoldings/omniauth-basecamp.git
+  revision: 3270694faf50ba0d9c57e2185e5d76b92f1de4f4
+  specs:
+    omniauth-basecamp (0.1.0)
+      omniauth-oauth2 (~> 1.1)
+
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.d50c8d7)
+    trepscore-services (0.0.2.b15ada9)
       activesupport
       descendants_tracker (~> 0.0.4)
+      faraday
       legato (>= 0.3.3)
       octokit (>= 3.3.0)
       omniauth-github
@@ -81,7 +89,7 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    octokit (3.3.1)
+    octokit (3.4.0)
       sawyer (~> 0.5.3)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
@@ -176,6 +184,7 @@ DEPENDENCIES
   guard-rspec
   haml
   omniauth
+  omniauth-basecamp!
   pry
   rake
   rb-fchange
