@@ -92,6 +92,14 @@ class TrepScoreServicesWeb < Sinatra::Base
 
       @integration_data = @data.merge(@oauth_data)
 
+
+      @discovered_values = {}
+      unless @oauth_data.empty?
+        @service.schema.each do |type, field, _|
+          @discovered_values[field] = @service.discover(field, @integration_data)
+        end
+      end
+
       @last_response = session[@service.hook_name + '_last_response'] || {}
     end
 

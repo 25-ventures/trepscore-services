@@ -95,9 +95,22 @@
             - @service.schema.each do |type, field, schema_flag|
               .form-group
                 %label.text-capitalize{for: field}= field
-                %input.form-control{type: type, name: field, value: @data[field.to_s]}
+                - case @discovered_values[field]
+                - when String, Fixnum
+                  %input.form-control{type: type, name: field, value: @data[field.to_s], disabled: true}
+                - when Array
+                  %select.form-control{name: "#{field}[]", multiple: true}
+                    - @discovered_values[field].first.each do |id, value|
+                      %option{value: id, selected: (@data[field.to_s] != nil && @data[field.to_s].include?(id))}= value
+                - when Hash
+                  %select.form-control{name: field, multiple: false}
+                    - @discovered_values[field].each do |id, value|
+                      %option{value: id}= value
+                - else
+                  %input.form-control{type: type, name: field, value: @data[field.to_s]}
                 - if schema_flag == :required
                   %p.help-block required field
+
             %button{type: 'submit', class: 'btn btn-primary'} Save Settings
 
     / runner
