@@ -86,9 +86,10 @@ section aside {
 }
 
 section article {
-  border-left: 2px solid #ccc;;
+  border-left: 2px solid #ccc;
   padding-left: 10px;
   margin-left: -10px;
+  word-break: break-all;
 }
 
 .callout {
