@@ -36,13 +36,17 @@ module TrepScore
 
       def call(period)
         # Pagination does not seem to work for the projects API
-        projects = make_request(build_url('projects'))
-        archived_projects = make_request(build_url('projects/archived'))
+        projects = collect(build_url('projects'))
+        remove_future(projects, period)
+        remove_trashed(projects, period)
 
-        todos = make_request(build_url('todos'), paging: true)
+        archived_projects = collect(build_url('projects/archived'))
+        remove_future(archived_projects, period)
+        remove_trashed(archived_projects, period)
 
-        # Remove trashed todos
-        todos.reject! {|t| t['trashed'] }
+        todos = collect(build_url('todos'), paging: true)
+        remove_future(todos, period)
+        remove_trashed(todos, period)
 
         completed, pending = todos.partition {|t| t['completed'] }
         past_due = pending.select {|t| t['due_at'] && Date.parse(t['due_at']) < Date.today }
@@ -60,39 +64,66 @@ module TrepScore
 
       private
 
-        def make_request(url, paging: false)
+        def collect(url, paging: false)
           result = []
 
           page = 1
           loop do
-            resp = Faraday.get do |req|
-              req.url "#{url}?page=#{page}"
-              req.headers['Authorization'] = "Bearer #{data['token']}"
-              req.headers['User-Agent'] = 'TrepScore (engineering@trepscore.com)'
-            end
+            items = make_request("#{url}?page=#{page}")
 
-            if resp.success?
-              items = JSON.parse(resp.body)
+            if items.nil?
+              break
+            else
               result += items
               if !paging || items.empty?
                 break
               end
               page += 1
-            else
-              break
             end
           end
 
           result
         end
 
+        def make_request(url)
+          resp = Faraday.get do |req|
+            req.url url
+            req.headers['Authorization'] = "Bearer #{data['token']}"
+            req.headers['User-Agent'] = 'TrepScore (engineering@trepscore.com)'
+          end
+
+          if resp.success?
+            JSON.parse(resp.body)
+          end
+        end
+
         def build_url(endpoint)
           "https://basecamp.com/#{data['account']}/api/v1/#{endpoint}.json"
         end
 
+        def created_at_for(item)
+          DateTime.parse(item['created_at'])
+        end
+
+        def remove_future(items, period)
+          items.reject! do |item|
+            created_at_for(item) > period.end
+          end
+        end
+
+        def created_in?(item, period)
+          period.cover? created_at_for(item)
+        end
+
+        def remove_trashed(items, period)
+          items.reject! do |item|
+            !created_in?(item, period) && item['trashed']
+          end
+        end
+
         def filter_by_created_at(items, period)
           items.select do |item|
-            period.cover? DateTime.parse(item['created_at'])
+            created_in?(item, period)
           end
         end
     end
