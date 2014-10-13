@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.ac1461d)
+    trepscore-services (0.0.2.d50c8d7)
+      activesupport
       descendants_tracker (~> 0.0.4)
       legato (>= 0.3.3)
       octokit (>= 3.3.0)

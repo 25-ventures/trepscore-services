@@ -1,6 +1,10 @@
 require 'descendants_tracker'
 require 'ostruct'
 
+require 'active_support'
+require 'active_support/core_ext/string/inflections'
+require 'active_support/core_ext/hash/indifferent_access'
+
 module TrepScore
   module Services
 
@@ -346,6 +350,53 @@ module TrepScore
           new(data).test
         end
 
+        # Helper used to determine if the class supports discovery. Optionally
+        # accepts an attribute to check for its ability to be discovered.
+        def discoverable?(attribute = nil)
+          if attribute.nil?
+            schema.any? do |_, attribute, _|
+              method_defined?(discovery_method(attribute))
+            end
+          else
+            method_defined?(discovery_method(attribute))
+          end
+        end
+
+        # Perform discovery for the given attribute.
+        # This relies on a method that is the pluralized form of the given
+        # attribute. The return type of the discovery method determines the
+        # interface element. Refer to the table below:
+        #
+        #   nil:
+        #     standard editable element
+        #   'someString':
+        #     standard non-editable element
+        #   {id: 'display_value'}:
+        #     select box, single selectable option
+        #   [{id: 'display_value'}]:
+        #     select box, multiple selectable options
+        #
+        # If the discovery method is undefined, it follows the behavior of
+        # returning nil.
+        #
+        # Example:
+        #
+        #   class SomeService < Service
+        #     required do
+        #       string :group
+        #     end
+        #
+        #     def groups
+        #       ...
+        #     end
+        #   end
+        def discover(attribute, data = {})
+          method = discovery_method(attribute)
+          if method_defined? method
+            new(data.with_indifferent_access).public_send(method)
+          end
+        end
+
         def ready?(data = {})
           make_hash_indifferent(data)
 
@@ -392,6 +443,10 @@ module TrepScore
           def make_hash_indifferent(hash)
             hash.default_proc = INDIFFERENT_PROC
           end
+
+          def discovery_method(attribute)
+            attribute.to_s.pluralize
+          end
       end
 
       attr_reader :data
@@ -399,7 +454,7 @@ module TrepScore
       # Basic initializer provided to make life easier. All data needed
       # from OAuth or the Schema is passed through the `data` hash.
       def initialize(data)
-        @data = data
+        @data = data.with_indifferent_access
 
         validate
       end
