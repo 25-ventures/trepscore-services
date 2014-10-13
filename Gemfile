@@ -4,7 +4,6 @@ ruby '2.1.1'
 gemspec
 
 gem 'rake'
-gem 'omniauth-basecamp', github: 'NetsoftHoldings/omniauth-basecamp'
 
 group :development do
   gem 'pry'

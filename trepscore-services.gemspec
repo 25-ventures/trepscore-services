@@ -42,8 +42,9 @@ Gem::Specification.new do |spec|
 
   # Basecamp
   spec.add_dependency 'faraday'
-  # spec.add_dependency 'omniauth-basecamp' # TODO: uncomment when gem is updated
+  spec.add_dependency 'omniauth-basecamp'
 
+  #=============================================================================
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
