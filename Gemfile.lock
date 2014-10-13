@@ -1,11 +1,13 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.d50c8d7)
+    trepscore-services (0.0.2.723ab8a)
       activesupport
       descendants_tracker (~> 0.0.4)
+      faraday
       legato (>= 0.3.3)
       octokit (>= 3.3.0)
+      omniauth-basecamp
       omniauth-github
       omniauth-google-oauth2 (>= 0.2.5)
       pipedrive-client
@@ -81,11 +83,13 @@ GEM
       multi_json (~> 1.3)
       multi_xml (~> 0.5)
       rack (~> 1.2)
-    octokit (3.3.1)
+    octokit (3.4.0)
       sawyer (~> 0.5.3)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
       rack (~> 1.0)
+    omniauth-basecamp (0.2.0)
+      omniauth-oauth2 (~> 1.1)
     omniauth-github (1.1.2)
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.1)

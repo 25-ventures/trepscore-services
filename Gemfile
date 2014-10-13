@@ -26,5 +26,4 @@ group :development do
   gem 'thin'
   gem 'haml'
   gem 'redcarpet'
-
 end
