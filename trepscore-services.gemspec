@@ -44,7 +44,12 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'faraday'
   spec.add_dependency 'omniauth-basecamp'
 
+  # Trello
+  spec.add_dependency 'ruby-trello'
+  spec.add_dependency 'omniauth-trello'
+
   #=============================================================================
+
 
   spec.files = %w(Gemfile LICENSE README.md CONTRIBUTING.md Rakefile)
   spec.files << "trepscore-services.gemspec"
