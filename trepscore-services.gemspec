@@ -1,9 +1,6 @@
 lib_file = File.expand_path("../lib/trepscore/services.rb", __FILE__)
 File.read(lib_file) =~ /\bVERSION\s*=\s*["'](.+?)["']/
 version = $1
-sha = `git rev-parse HEAD 2>/dev/null || echo unknown`
-sha.chomp!
-version << ".#{sha[0,7]}"
 
 Gem::Specification.new do |spec|
   spec.specification_version = 2 if spec.respond_to? :specification_version=

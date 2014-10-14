@@ -2,7 +2,7 @@ require 'trepscore/services/service'
 
 module TrepScore
   module Services
-    VERSION = '0.0.2'
+    VERSION = '5'
 
     class << self
       # Load all available services
