@@ -1,0 +1,11 @@
+### Basecamp
+
+Basecamp makes it easy for people in different roles with different responsibilities to communicate and work together. It’s a place to share files, have discussions, collaborate on documents, assign tasks, and check due dates. Basecamp stores everything securely and can be accessed at anytime from anywhere.
+
+### Install Notes
+
+If you are on this page you have already connected to Basecamp using OAuth. Now please choose the name
+of the account for which you want statistics.
+
+Each week we will see how many projects and todos you have in various states of completion. In TrepScore we use
+the term task for a Basecamp todo.
