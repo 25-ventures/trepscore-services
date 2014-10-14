@@ -49,7 +49,7 @@ module TrepScore
         remove_trashed(todos, period)
 
         completed, pending = todos.partition {|t| t['completed'] }
-        past_due = pending.select {|t| t['due_at'] && Date.parse(t['due_at']) < Date.today }
+        past_due = pending.select {|t| t['due_at'] && Date.parse(t['due_at']) < period.begin }
 
         {
           projects: projects.count,
