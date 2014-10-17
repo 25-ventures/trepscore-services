@@ -1,27 +1,33 @@
 ### Google Analytics
 
-Your customers go everywhere; shouldn't your analytics? Google Analytics shows you the full customer
-picture across ads and videos, websites and social tools, tablets and smartphones. That makes it
-easier to serve your current customers and win new ones.
+Google Analytics can track visitors from all referrers, including search engines and social networks, direct visits and referring sites. It also tracks display advertising, pay-per-click networks, email marketing and digital collateral such as links within PDF documents.
 
 ### Install Notes
 
-If you are on this page you have already connected to Google Analytics using OAuth. Now please enter
-the name of the account and the profile under that account for which you want statistics.
+If you are on this page you have already connected to Google Analytics using OAuth. 
 
-If you go to the Home section in your Google Analytics account, the account is usually near the top,
-and then underneath it are profiles, such as "All Web Site Data".
+Now please point us to the Analytics account that you’d like to monitor on TrepScore.  For this we need two pieces 
+of information: the Name of the Account and the Profile under that Account for which you want statistics.
 
-Each week we see how many sessions, users, new users, and page views have occurred on in this
-account and profile, as well as the bounce rate, percentage of new sessions and average session
-duration. We use different terminology for these within our application, and the data mapping is
-like so:
+Here’s where you can find that information in Google Analytics:
 
- * **TrepScore Name = Google Name**
- * Total Visits = Sessions
- * Unique Visits = Users
- * New Visits = New Users
- * Percent New Visits = Percent New Sessions
- * Bounce Rate = Bounce Rate
- * Average Visit Duration = Average Session Duration
- * Page Views = Pageviews
+1. Go to the Home page of your Google Analytics account.
+2. In the middle of the Home page you’ll see a table with information such as ‘Sessions’ and ‘Avg. Session Duration’ and ‘Bounce Rate’
+3. On the left side of that table you’ll see the Name of your Account.
+4. The top line, which is often the name of your company, is the Name of the Account.
+5. The bottom line, which is often ‘All Web Site Data’, is your Profile under that Account.  
+6. Enter these two pieces of information into the fields below.
+
+### Viewing Notes
+
+TrepScore uses slightly different terminology for metrics reported in Google Analytics, here’s how they correspond to what you know:
+
+TrepScore Name  | Google Name
+------------- | -------------
+Total Visits  | Sessions
+Unique Visits  | Users
+New Visits  | New Users
+Percent New Visits  | Percent New Sessions
+Bounce Rate  | Bounce Rate
+Average Visit Duration  | Average Session Duration
+Page Views  | Pageviews
