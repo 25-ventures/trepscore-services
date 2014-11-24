@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trepscore-services (0.0.2.c28f1d6)
+    trepscore-services (5)
       activesupport
       descendants_tracker (~> 0.0.4)
       faraday
@@ -18,10 +18,10 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activemodel (4.1.6)
-      activesupport (= 4.1.6)
+    activemodel (4.1.8)
+      activesupport (= 4.1.8)
       builder (~> 3.1)
-    activesupport (4.1.6)
+    activesupport (4.1.8)
       i18n (~> 0.6, >= 0.6.9)
       json (~> 1.7, >= 1.7.7)
       minitest (~> 5.1)
@@ -72,13 +72,13 @@ GEM
     lumberjack (1.0.9)
     method_source (0.8.2)
     mime-types (1.25.1)
-    mini_portile (0.6.0)
-    minitest (5.4.2)
+    mini_portile (0.6.1)
+    minitest (5.4.3)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    nokogiri (1.6.3.1)
-      mini_portile (= 0.6.0)
+    nokogiri (1.6.4.1)
+      mini_portile (~> 0.6.0)
     oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
@@ -122,7 +122,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    quickbooks-ruby (0.1.5)
+    quickbooks-ruby (0.1.7)
       activemodel
       nokogiri
       oauth
