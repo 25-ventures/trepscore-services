@@ -15,6 +15,8 @@ require 'trepscore'
 
 TrepScore::Services.load
 
+Quickbooks.sandbox_mode = true
+
 class TrepScoreServicesWeb < Sinatra::Base
   register Sinatra::Reloader
   also_reload './lib/**/*.rb'
