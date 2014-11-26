@@ -117,7 +117,7 @@ module TrepScore
       end
 
       def xml_to_hash(xml)
-        {}.tap do |result|
+        Hash.new(0).tap do |result|
           # Take each column from the Summary elements, get the values, and group them
           xml.css("Row Summary ColData").map {|n| n['value'] }.each_slice(2) do |name, value|
             # Downcase to avoid any issues with casing
