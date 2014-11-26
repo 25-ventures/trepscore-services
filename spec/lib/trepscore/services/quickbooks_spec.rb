@@ -12,7 +12,7 @@ describe TrepScore::Services::Quickbooks do
   end
 
   it 'handles authorization failures' do
-    allow(client).to receive(:balance_sheet).and_raise(::Quickbooks::AuthorizationFailure)
+    allow(client).to receive(:profit_and_loss).and_raise(::Quickbooks::AuthorizationFailure)
 
     expect { subject.call(period) }.to raise_error(TrepScore::ConfigurationError)
   end
